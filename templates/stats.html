@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" media="screen" href = "/static/css/bootstrap.min.css">
+  <link rel="stylesheet" media="screen" href = "/static/js/bootstrap.js">
+  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+  <title>
+  Stats
+  </title>
+</head>
+
+<body>
+
+<h2>STATS</h2>
+
+<div class="container-fluid">
+  <div class="row">
+    <form class="form-group" role="search" method="POST">
+      <div class="col-md-8">
+        <input type="text" class="form-control" placeholder="Comma separated list of values.  Ex) 1,2,3,4,5" name="inputtxt">
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-default">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<h2> LIST OF VALUES: {{ ov }}</h2>
+
+<h3>BASIC INFO: </h3>
+<table class="table">
+  <tr>
+    <td>
+      AVERAGE
+    </td>
+    <td>
+      {{ avg }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      STANDARD DEVIATION
+    </td>
+    <td>
+      {{ std }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      STANDARD ERROR
+    </td>
+    <td>
+      {{ stderr }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      25%
+    </td>
+    <td>
+      {{ q1 }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      50%
+    </td>
+    <td>
+      {{ q2 }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      75%
+    </td>
+    <td>
+      {{ q3 }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      MAX
+    </td>
+    <td>
+      {{ maxx }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      MIN
+    </td>
+    <td>
+      {{ minn }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      MEDIAN
+    </td>
+    <td>
+      {{ med }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      COUNT
+    </td>
+    <td>
+      {{ count }}
+    </td>
+  </tr>
+</table>
+
+
+</body>
+
+</html>
