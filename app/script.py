@@ -13,7 +13,6 @@ def avg(lnums):
     arr = np.array(lnums)
     return arr.mean()
 
-
 def std(lnums):
     """Return Standard Deviation and Standard Error."""
     arr = np.array(lnums)
@@ -21,7 +20,6 @@ def std(lnums):
     count = len(lnums)
     stderror = std/float(count)
     return std, stderror
-
 
 # def median(lnums):
 #     arr = np.array(lnums)

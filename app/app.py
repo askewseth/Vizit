@@ -8,11 +8,9 @@ from matplotlib.figure import Figure
 
 import sys
 sys.path.insert(0, "/home/extra/Desktop/tsite/scripts/")
-import scripts.script as sc
-
+import script as sc
 
 app = Flask(__name__)
-
 
 @app.route('/', methods=["GET", "POST"])
 def stats():
@@ -61,6 +59,12 @@ def home():
     """Test home page."""
     return render_template('home.html')
 
+@app.route('/login')
+def login():
+    """Login in page
+    handle server side logic here
+    """
+    return None
 
 @app.route('/plot.png')
 def plot():
@@ -78,8 +82,6 @@ def plot():
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
     return response
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
