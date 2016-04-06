@@ -2,22 +2,46 @@
 <html lang="en">
 
 <head>
-  <link rel="stylesheet" media="screen" href = "/static/css/bootstrap.min.css">
-  <link rel="stylesheet" media="screen" href = "/static/js/bootstrap.js">
+  <link rel="stylesheet" media="screen" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" media="screen" href="/static/js/bootstrap.js">
+  <link rel="stylesheet" media="screen" href="/static/css/home-style.css">
+  <link rel="stylesheet" media="screen" href="/static/scc/color.css">
   <meta name="viewport" content = "width=device-width, initial-scale=1.0">
-  <title>
-  Stars
-</title>
 </head>
 
 <body>
-
-<h2>Vizit</h2>
-
-<p>This needs some styling for sure!</p>
-<a href="#">Register</a>
-<a href="#">Login</a>
-
+	<div class='container color-primary-0'>
+		<div class='jumbotron'>
+			<h2>Vizit - Kinda arbitrary data visualizations!</h2>
+		</div>
+		<div class='row'>
+			<div class='col-md-4 col-md-offset-4'>
+				<h3>Login</h3>
+				<div class='form-group'>
+					<label for='usr'>User Name:</label>
+					<input type='text' class='form-control' id='usr'>
+				</div>
+				<div class='form-group'>
+					<label for='pwd'>Password:</label>
+					<input type="password" class='form-control' id='pwd'>
+				</div>
+				<div class='form-group'>
+					<input type='submit' class='form-control' id='sub' value='Submit'>
+				</div>
+			</div>
+			<!--<div class='col-md-2 col-md-offset-4'>
+				<h3>Register</h3>
+				<div class='form-group'>
+					<label for='usrReg'>User Name:</label>
+					<input type='text' class='form-control' id='usrReg'>
+				</div>
+				<div class='form-group'>
+					<label for='pwdReg'>Password:</label>
+					<input type='password' class='form-control' id='pwdReg'>
+				</div>
+				</div>-->
+		</div>
+	</div>
 </body>
 
 </html>

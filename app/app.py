@@ -12,7 +12,7 @@ import script as sc
 
 app = Flask(__name__)
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/stats/', methods=["GET", "POST"])
 def stats():
     """
     Display statistics on a given dataset.
@@ -54,7 +54,7 @@ def stats():
                            )
 
 
-@app.route('/home/')
+@app.route('/')
 def home():
     """Test home page."""
     return render_template('home.html')
