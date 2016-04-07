@@ -6,6 +6,13 @@ from flask import Flask, make_response, render_template, request
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+"""from OpenSSL import SSL 
+
+CONTEXT = SSL.Context(SSL.TLSv1_2_METHOD)
+CONTEXT.use_privatekey_file('./static/keys/server.key')
+CONTEXT.use_certificate_file('./static/keys/server.crt')
+"""
+
 import sys
 sys.path.insert(0, "/home/extra/Desktop/tsite/scripts/")
 import script as sc
@@ -50,8 +57,7 @@ def stats():
                            maxx=maxx,
                            med=med,
                            count=count,
-                           stderr=stderror
-                           )
+                           stderr=stderror)
 
 
 @app.route('/')
@@ -84,4 +90,6 @@ def plot():
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #CONTEXT = ('./static/keys/server.crt', './static/keys/server.key')
+    #app.run(host='127.0.0.1', port='5000', debug=True, ssl_context=CONTEXT)
+    app.run(host='127.0.0.1', port=5000, debug=True)
