@@ -23,6 +23,11 @@ body {
 	background-image: url('../assets/sayagata-400px/sayagata-400px/sayagata-400px.png');
 }
 
+.linkbar {
+    height: 40px;
+    background-color: #3C3970;
+}
+
 .form{
 	width: 400px;
 	height: 230px;
@@ -32,6 +37,47 @@ body {
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
+}
+
+.button {
+    display: block;
+    background: #3D60A6;
+    width: 314px;
+    padding: 12px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin: auto;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background: #4876D1;
+}
+
+input[type="text"]:focus{
+	border: 2px solid #3D60A6;
+}
+
+input[type="submit"]{
+    display: block;
+    /*background: #1abc9d;*/
+    background: #3D60A6;
+    width: 314px;
+    padding: 12px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin: auto;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
 }
 
 input[type="text"]{
@@ -52,23 +98,6 @@ input[type="text"]{
 
 input[type="text"]:focus{
 	border: 2px solid #3D60A6;
-}
-
-input[type="submit"]{
-	display: block;
-	/*background: #1abc9d;*/
-	background: #3D60A6;
-	width: 314px;
-	padding: 12px;
-	cursor: pointer;
-	color: #fff;
-	border: 0px;
-	margin: auto;
-	border-radius: 5px;
-	-moz-border-radius: 5px
-	-webkit-border-radius: 5px;
-	font-size: 17px;
-	transition: all 0.3s ease;
 }
 
 input[type="submit"]:hover{
@@ -104,13 +133,13 @@ a:hover{
 }
 
 :-moz-placeholder { /* Firefox 18- */
-	color: gray;  
+	color: gray;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-	color: gray;  
+	color: gray;
 }
 
-:-ms-input-placeholder {  
-	color: gray;  
+:-ms-input-placeholder {
+	color: gray;
 }

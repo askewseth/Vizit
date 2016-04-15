@@ -3,10 +3,12 @@ import random
 import StringIO
 
 from flask import Flask, make_response, render_template, request
+from flask_restful import Resource, Api
+from flask.views import MethodView
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-"""from OpenSSL import SSL 
+"""from OpenSSL import SSL
 
 CONTEXT = SSL.Context(SSL.TLSv1_2_METHOD)
 CONTEXT.use_privatekey_file('./static/keys/server.key')
@@ -18,6 +20,32 @@ sys.path.insert(0, "/home/extra/Desktop/tsite/scripts/")
 import script as sc
 
 app = Flask(__name__)
+api = Api(app)
+
+"""
+Class to generate the plot data and return it as html
+
+API Methods:
+    GET - <id>
+        Gets a stored plot based on the id of the plot data (user must be logged in)
+    PUT
+        Generates a plot based on the data passed in from the data form in the request.
+        the plot is returned as html to the client? (not sure if flask will like that)
+"""
+class PlotApi(Resource):
+    def gen_plot(self, data):
+        return None
+
+    def get(self):
+        """ There has to be a better way to return just the html"""
+        return {"ERROR" : "Not implemented, yet."}
+
+    def put(self):
+        """ hopefully this gets the data"""
+        plot_data = request.form['data']
+        return None
+
+api.add_resource(PlotApi, '/apiv1/plot')
 
 @app.route('/stats/', methods=["GET", "POST"])
 def stats():
@@ -72,8 +100,14 @@ def login():
     """
     return None
 
+@app.route('/plot_data')
+def plot_data():
+    """ We need to render the page and get the data
+    from the user and then generate the appropriate html"""
+    return render_template('plot.html')
+
 @app.route('/plot.png')
-def plot():
+def plot_img():
     """Display plot of random numbers, just proof of concept."""
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
