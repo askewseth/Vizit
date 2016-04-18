@@ -3,7 +3,7 @@ import random
 import StringIO
 
 from flask import Flask, make_response, render_template, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from flask.views import MethodView
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -32,6 +32,9 @@ API Methods:
         Generates a plot based on the data passed in from the data form in the request.
         the plot is returned as html to the client? (not sure if flask will like that)
 """
+put_parser = reqparse.RequestParser()
+put_parser.add_argument("data",type=str, help="Data must be comma delimited.")
+
 class PlotApi(Resource):
     def gen_plot(self, data):
         return None
@@ -41,9 +44,9 @@ class PlotApi(Resource):
         return {"ERROR" : "Not implemented, yet."}
 
     def put(self):
-        """ hopefully this gets the data"""
-        plot_data = request.form['data']
-        return None
+        data = request.json['data']
+        print data
+        return "<p>Posted to the plot endpoint</p>"
 
 api.add_resource(PlotApi, '/apiv1/plot')
 

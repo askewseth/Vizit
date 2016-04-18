@@ -1,16 +1,24 @@
 <!doctype html>
 <head>
   <title>Vizit</title>
+  <script type="text/javascript" src="/static/js/api.js"></script>
 </head>
 
 <body>
 
   <div id="data_form_cont">
-    <form action="/">
-      <input type="text">
-      <input type="submit" value="submit data">
-    </from>
+    <form id="data_form">
+      <input id="data_input" type="text">
+      <input id="data_form_sub" type="button" value="submit data">
+    </form>
   </div>
   <div id="plot-container"></div>
 
-<body>
+  <script type="text/javascript">
+    document.getElementById("data_form_sub").addEventListener("click", function () {
+        console.log("Boop");
+        sub_data();
+    });
+  </script>
+
+</body>
