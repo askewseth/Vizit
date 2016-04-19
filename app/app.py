@@ -2,7 +2,7 @@
 import random
 import StringIO
 
-from flask import Flask, make_response, render_template, request
+from flask import Flask, make_response, render_template, request, session, redirect, url_for, escape
 from flask_restful import Resource, Api, reqparse
 from flask.views import MethodView
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -32,23 +32,37 @@ API Methods:
         Generates a plot based on the data passed in from the data form in the request.
         the plot is returned as html to the client? (not sure if flask will like that)
 """
-put_parser = reqparse.RequestParser()
-put_parser.add_argument("data",type=str, help="Data must be comma delimited.")
+get_parser = reqparse.RequestParser()
+get_parser.add_argument("id",type=str, help="Data must be comma delimited.")
 
-class PlotApi(Resource):
+"""
+class PlotApiUnauth(Resource):
+    # Dict to temporarily hold the plots
+    plots = {}
     def gen_plot(self, data):
         return None
 
     def get(self):
-        """ There has to be a better way to return just the html"""
+        #There has to be a better way to return just the html
         return {"ERROR" : "Not implemented, yet."}
 
     def put(self):
-        data = request.json['data']
-        print data
-        return "<p>Posted to the plot endpoint</p>"
+       # data = request.json['data']
+       # print data
+        return "{'name' : 'put_endpoint', 'value' : 'Not fully working'}"
 
-api.add_resource(PlotApi, '/apiv1/plot')
+api.add_resource(PlotApiUnauth, '/apiv1/plot')
+"""
+
+@app.route('/apiv1/plot', methods=["GET", "POST", "PUT"])
+def api_plot():
+    if request.method == 'GET':
+        # Is the user authorized?
+        if false:
+            return '<p>Only authorized users may retreive plots</p>'
+
+        return None
+
 
 @app.route('/stats/', methods=["GET", "POST"])
 def stats():
@@ -96,11 +110,18 @@ def home():
     """Test home page."""
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
     """Login in page
     handle server side logic here
     """
+    if request.method == "GET":
+        #render_template("login.html")
+        return render_template("login.html")
+    elif request.method == "POST":
+        # Begin credential validation here
+        return "{'ERROR' : 'Not implemented'}"
+
     return None
 
 @app.route('/plot_data')
