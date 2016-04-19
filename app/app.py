@@ -159,8 +159,28 @@ def login():
         return render_template("login.html")
     elif request.method == "POST":
         # Begin credential validation here
+        """
+        1. Get the data from the form
+        2. Hash the password and check for username entry in DB
+        3. If match set session["authed"] = True
+        4. else set session["authed"] = False
+        5. Redirect on True, error on False
+        """
         return "{'ERROR' : 'Not implemented'}"
 
+    return None
+
+@app.route('/register', methods=["GET", "POST", "PUT"])
+def register():
+    if request.method == "GET":
+        # Render the registration page
+        return render_template("register.html")
+    elif request.method == "POST":
+        # Create an account
+        pass
+    elif request.method == "PUT":
+        # Create an account
+        pass
     return None
 
 @app.route('/plot_data')
