@@ -10,7 +10,7 @@ var sub_data = function () {
     // Get the data from the form
     var params = document.getElementById("data_input").value;
     console.log(params);
-    console.log(JSON.stringify(params));
+    console.log(JSON.stringify({data : params}));
 
     xhr.open("PUT", url, true);
     xhr.setRequestHeader("ContentType", "application/json;charset=UTF-8");

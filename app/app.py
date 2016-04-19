@@ -1,10 +1,14 @@
 "Plot a PNG using matplotlib in a web request, using Flask."
 import random
+import os
 import StringIO
 
-from flask import Flask, make_response, render_template, request, session, redirect, url_for, escape
+from flask import Flask, make_response, render_template, request, redirect, url_for, session
 from flask_restful import Resource, Api, reqparse
 from flask.views import MethodView
+from werkzeug.datastructures import CallbackDict
+from flask.sessions import SessionInterface, SessionMixin
+from itsdangerous import URLSafeTimedSerializer, BadSignature
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -20,7 +24,56 @@ sys.path.insert(0, "/home/extra/Desktop/tsite/scripts/")
 import script as sc
 
 app = Flask(__name__)
-api = Api(app)
+
+# Session stuff http://flask.pocoo.org/snippets/51/
+class ItsdangerousSession(CallbackDict, SessionMixin):
+    def __init__(self, initial=None):
+        def on_update(self):
+            self.modified = True
+        CallbackDict.__init__(self, initial, on_update)
+        self.modified = False
+
+
+class ItsdangerousSessionInterface(SessionInterface):
+    salt = 'cookie-session'
+    session_class = ItsdangerousSession
+
+    def get_serializer(self, app):
+        if not app.secret_key:
+            return None
+        return URLSafeTimedSerializer(app.secret_key,
+                                      salt=self.salt)
+
+    def open_session(self, app, request):
+        s = self.get_serializer(app)
+        if s is None:
+            return None
+        val = request.cookies.get(app.session_cookie_name)
+        if not val:
+            return self.session_class()
+        max_age = app.permanent_session_lifetime.total_seconds()
+        try:
+            data = s.loads(val, max_age=max_age)
+            return self.session_class(data)
+        except BadSignature:
+            return self.session_class()
+
+    def save_session(self, app, session, response):
+        domain = self.get_cookie_domain(app)
+        if not session:
+            if session.modified:
+                response.delete_cookie(app.session_cookie_name,
+                                   domain=domain)
+            return
+        expires = self.get_expiration_time(app, session)
+        val = self.get_serializer(app).dumps(dict(session))
+        response.set_cookie(app.session_cookie_name, val,
+                            expires=expires, httponly=True,
+                            domain=domain)
+
+# Activate the session interface
+app.session_interface = ItsdangerousSessionInterface()
+# Session stuff http://flask.pocoo.org/snippets/51/
 
 """
 Class to generate the plot data and return it as html
@@ -32,33 +85,12 @@ API Methods:
         Generates a plot based on the data passed in from the data form in the request.
         the plot is returned as html to the client? (not sure if flask will like that)
 """
-get_parser = reqparse.RequestParser()
-get_parser.add_argument("id",type=str, help="Data must be comma delimited.")
-
-"""
-class PlotApiUnauth(Resource):
-    # Dict to temporarily hold the plots
-    plots = {}
-    def gen_plot(self, data):
-        return None
-
-    def get(self):
-        #There has to be a better way to return just the html
-        return {"ERROR" : "Not implemented, yet."}
-
-    def put(self):
-       # data = request.json['data']
-       # print data
-        return "{'name' : 'put_endpoint', 'value' : 'Not fully working'}"
-
-api.add_resource(PlotApiUnauth, '/apiv1/plot')
-"""
 
 @app.route('/apiv1/plot', methods=["GET", "POST", "PUT"])
 def api_plot():
     if request.method == 'GET':
         # Is the user authorized? Check the session.
-        if true:
+        if True:
             return '<p>Only authorized users may retreive plots</p>'
         return None
     elif request.method == "POST":
@@ -113,6 +145,8 @@ def stats():
 @app.route('/')
 def home():
     """Test home page."""
+    session["test"] = "this is a test"
+    print session["test"]
     return render_template('home.html')
 
 @app.route('/login', methods=["GET", "POST"])
@@ -153,6 +187,8 @@ def plot_img():
     return response
 
 if __name__ == '__main__':
+    # Create a random session key
+    app.secret_key = os.urandom(24)
     #CONTEXT = ('./static/keys/server.crt', './static/keys/server.key')
     #app.run(host='127.0.0.1', port='5000', debug=True, ssl_context=CONTEXT)
     app.run(host='127.0.0.1', port=5000, debug=True)
