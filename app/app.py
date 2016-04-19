@@ -57,11 +57,16 @@ api.add_resource(PlotApiUnauth, '/apiv1/plot')
 @app.route('/apiv1/plot', methods=["GET", "POST", "PUT"])
 def api_plot():
     if request.method == 'GET':
-        # Is the user authorized?
-        if false:
+        # Is the user authorized? Check the session.
+        if true:
             return '<p>Only authorized users may retreive plots</p>'
-
         return None
+    elif request.method == "POST":
+        # Update an existing plot
+        return '<p>Eventually this will be a plot</p>'
+    elif request.method == "PUT":
+        # Create a new plot
+        return '<p>Eventually this will be a plot</p>'
 
 
 @app.route('/stats/', methods=["GET", "POST"])

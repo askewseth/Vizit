@@ -4,8 +4,6 @@
 
 var xhr = new XMLHttpRequest();
 var url = "/apiv1/plot";
-// Get the plot div
-var plot_div = document.getElementById("plot-container");
 
 // Define our own functionality to the submit button
 var sub_data = function () {
@@ -14,15 +12,22 @@ var sub_data = function () {
     console.log(params);
     console.log(JSON.stringify(params));
 
-    xhr.open("PUT", url);
+    xhr.open("PUT", url, true);
     xhr.setRequestHeader("ContentType", "application/json;charset=UTF-8");
-    xhr.responseType = "document";
+    // Make sure this is correct or the rest of the code won't work.
+    xhr.responseType = "text";
     xhr.send(JSON.stringify({data : params}));
 
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.statusCode == 200) {
-            // Do a thing
-            console.log("it's kind of working");
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            if(xhr.status == 200) {
+                // Get the returned html
+                console.log("Got response");
+                console.log(xhr);
+                console.log(xhr.response);
+                console.log(xhr.responseText);
+                document.getElementById("plot-container").innerHTML = xhr.responseText;
+            }
         }
     };
 };
