@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+	  <link rel="stylesheet" media="screen" href="static/css/home-style.css">
+	  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class='jumbotron'>
+			    <h2>Vizit - Kinda arbitrary data visualizations!</h2>
+			    <a id="viz_button" class="button" >Get Started Vizualizing!</a>
+			    <p> Or you can login or register below.</p>
+			  	</div>
+			  	<div class="menuBar">
+				</div>
+				
+			  </div>
+			  <div class="content">
+			  
+				  <div class='container' style="margin:auto">
+				  	<h2 style="text-align: center; font-size:26pt">Please enter a list of 
+					numerical values:</h2>
+					    <form class="listform" role="search" method="POST">
+					      <div><span>
+					        <input type="text" class="listbox" placeholder="Comma separated list of values.  Ex) 1,2,3,4,5" name="inputtxt"></span>
+					        
+					      <span>
+					        <button type="submit" class="listSubmit">Submit</button></span>
+					      </div>
+					    </form>
+					
+					
+					
+					<h2 style="text-align: center"> LIST OF VALUES: {{ ov }}</h2>
+					
+					<h3 style="text-align: center">BASIC INFO:</h3>
+					<table class="center">
+					  <tr>
+					    <td>
+					      AVERAGE
+					    </td>
+					    <td>
+					      {{ avg }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      STANDARD DEVIATION
+					    </td>
+					    <td>
+					      {{ std }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      STANDARD ERROR
+					    </td>
+					    <td>
+					      {{ stderr }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      25%
+					    </td>
+					    <td>
+					      {{ q1 }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      50%
+					    </td>
+					    <td>
+					      {{ q2 }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      75%
+					    </td>
+					    <td>
+					      {{ q3 }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      MAX
+					    </td>
+					    <td>
+					      {{ maxx }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      MIN
+					    </td>
+					    <td>
+					      {{ minn }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      MEDIAN
+					    </td>
+					    <td>
+					      {{ med }}
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      COUNT
+					    </td>
+					    <td>
+					      {{ count }}
+					    </td>
+					  </tr>
+					</table>
+				  </div>
+			  </div>
+			  <div style="padding-bottom:40px" class='footer'>
+			  	<p style="text-align:center; color:white">Copyright 2016 - CoolGuys340</p>
+			  </div>
+		</div>
+	</body>
+</html>
