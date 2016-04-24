@@ -149,7 +149,7 @@ def home():
     """Test home page."""
     """session["test"] = "this is a test"
     print session["test"]"""
-    return render_template('home.html')
+    return render_template('default.html')
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
