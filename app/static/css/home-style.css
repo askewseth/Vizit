@@ -92,6 +92,8 @@ label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-siz
     transition: all 0.3s ease;
 }
 
+.infobox { margin-top:60px; margin-left:auto; margin-right:auto; width:50%; font-size:14pt }
+
 .form{
 	width: 400px;
 	height: 230px;
@@ -172,17 +174,6 @@ input[type=password]:focus{
 
 input[type=submit]:hover{
 	background: #4876D1;
-}
-
-a{
-	text-align: center;
-	font-family: Arial;
-	color: gray;
-	display: block;
-	margin: 15px auto;
-	text-decoration: none;
-	transition: all 0.3s ease;
-	font-size: 12px;
 }
 
 a:hover{

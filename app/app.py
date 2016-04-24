@@ -172,7 +172,7 @@ def login():
         password = request.form['password']
         if db.login(email,password):
             return email + "   " + password
-        else: return "You have entered some bullshit!!!"
+        else: return render_template('failedLogin.html')
         
         return email + "   " + password
 
