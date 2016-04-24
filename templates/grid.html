@@ -110,38 +110,6 @@
 
 
 <!--
- ██████  ██████  ███    ██ ██████  ██ ████████ ██  ██████  ███    ██  █████  ██           ██████  ██    ██ ████████ ██████  ██    ██ ████████
-██      ██    ██ ████   ██ ██   ██ ██    ██    ██ ██    ██ ████   ██ ██   ██ ██          ██    ██ ██    ██    ██    ██   ██ ██    ██    ██
-██      ██    ██ ██ ██  ██ ██   ██ ██    ██    ██ ██    ██ ██ ██  ██ ███████ ██          ██    ██ ██    ██    ██    ██████  ██    ██    ██
-██      ██    ██ ██  ██ ██ ██   ██ ██    ██    ██ ██    ██ ██  ██ ██ ██   ██ ██          ██    ██ ██    ██    ██    ██      ██    ██    ██
- ██████  ██████  ██   ████ ██████  ██    ██    ██  ██████  ██   ████ ██   ██ ███████      ██████   ██████     ██    ██       ██████     ██
--->
-
-<!-- {% if extra %}
-<table>
-  <tr>
-    <td>
-      Averages
-    </td>
-    <td>
-      Standard Deviations
-    </td>
-  </tr>
-  {% for a, s in averages and stds %}
-  <tr>
-    <td>
-      a
-    </td>
-    <td>
-      s
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %} -->
-
-
-<!--
  ██████  ██    ██ ████████ ██████  ██    ██ ████████
 ██    ██ ██    ██    ██    ██   ██ ██    ██    ██
 ██    ██ ██    ██    ██    ██████  ██    ██    ██
@@ -198,6 +166,65 @@
   </button>
 </form>
 </div>
+
+
+<!--
+ ██████  ██    ██ ████████ ██████  ██    ██ ████████
+██    ██ ██    ██    ██    ██   ██ ██    ██    ██
+██    ██ ██    ██    ██    ██████  ██    ██    ██
+██    ██ ██    ██    ██    ██      ██    ██    ██
+ ██████   ██████     ██    ██       ██████     ██
+-->
+
+<h3> Data Results 2</h3>
+
+
+<div class="container-fluid col-md-8">
+  <form class="form-group" role="search" method="POST">
+    <table class="table" align="left">
+      <tr>
+        <td align="center">
+          <strong>
+            Average
+          </strong>
+        </td>
+        <td align="center">
+          <strong>
+            Standard Deviation
+          </strong>
+        </td>
+        <td align="center">
+          <strong>
+            Standard Error
+          </strong>
+        </td>
+      </tr>
+      {% for i, r in finalsolutions %}
+      <tr>
+        <td align="center">
+          {{ i[0] }}
+        </td>
+        <td align="center">
+          {{ i[1] }}
+        </td>
+        <td align="center">
+          error
+        </td>
+        {% for col in r %}
+        <td align="center">
+            {{ col }}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+    </table>
+  <button type="submit" class="btn btn-default">
+    Submit
+  </button>
+</form>
+</div>
+
 
 </body>
 

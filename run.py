@@ -121,10 +121,6 @@ def ngrid(dim='5,5'):
         assert len(ans) == 2
         x, y = map(int, ans)
         orig = x, y
-        if request.method == "POST":
-            banner = request.form["0,0"]
-        else:
-            banner = "test banner"
 
         if request.method == "POST":
             rows = []
@@ -132,46 +128,29 @@ def ngrid(dim='5,5'):
                 cols = []
                 for iy in range(y):
                     index = str(ix) + ',' + str(iy)
-                    # try:
                     cols.append(request.form[index])
-                    # except Exception as e:
-                        # print e
                 rows.append(cols)
         else:
             rows = [[0]]
-        newrows = map(lambda x: ",".join(x), map(str, rows))
-        banner = "\n".join(map(str, newrows))
-
-        # Displaying the results
-        if request.method == 'POST':
-            extra = True
-            nrows = [filter(None, i) for i in rows]
-            dfs = map(lambda x: pd.DataFrame(x), nrows)
-            averages = map(lambda x: x.mean(), dfs)
-            stddev = map(lambda x: x.std(), dfs)
-            averages, stddev = "", ""
-        else:
-            extra, averages, stddev = False, None, None
-            extra = False
-        # rows = [["hello"], ["goodbye"]]
 
         try:
-            dfs = [pd.DataFrame(x) for x in rows]
-            averages = map(lambda x: x.mean(), dfs)
-            standarddevs = map(lambda x: x.std(), dfs)
-            solutions = reduce(zip, [averages, standarddevs])
+            dfs = [pd.DataFrame(i) for i in rows]
+            averages = map(lambda x: x.mean().values[0], dfs)
+            standarddevs = map(lambda x: x.std().values[0], dfs)
+            # standarderrors = map(lambda x: x.std().values[0]/float(np.sqrt(x.count().values[0])), dfs)
+            # solutions = reduce(zip, [averages, standarddevs, standarderrors])
+            # solutions = reduce(zip, [averages, standarddevs])
+            solutions = zip([averages, standarddevs])
         except:
             solutions = [[]]
         x, y = orig
-        rows = zip(solutions, rows)
+        # rows = zip(solutions, rows)
+        finalsolutions = zip(solutions, rows)
         return render_template('grid.html',
                                numcols=x,
                                numrows=y,
-                               banner=banner,
                                rows=rows,
-                               extra=extra,
-                               averages=averages,
-                               stddev=stddev
+                               finalsolutions=finalsolutions
                                )
     except Exception as e:
         return render_template('error.html', error=e)
