@@ -22,6 +22,8 @@ CONTEXT.use_certificate_file('./static/keys/server.crt')
 import sys
 sys.path.insert(0, "/home/extra/Desktop/tsite/scripts/")
 import script as sc
+import database as db
+
 
 app = Flask(__name__)
 
@@ -149,8 +151,6 @@ def home():
     print session["test"]"""
     return render_template('home.html')
 
-
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Login in page
@@ -168,7 +168,13 @@ def login():
         4. else set session["authed"] = False
         5. Redirect on True, error on False
         """
-        return "{'ERROR' : 'Not implemented'}"
+        email = request.form['email']
+        password = request.form['password']
+        if db.login(email,password):
+            return email + "   " + password
+        else: return "You have entered some bullshit!!!"
+        
+        return email + "   " + password
 
     return None
 
@@ -207,6 +213,31 @@ def plot_img():
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
     return response
+
+@app.route('/testlogin', methods=["GET", "POST"])
+def testlogin():
+    """Login in page
+    handle server side logic here
+    """
+    if request.method == "GET":
+        #render_template("login.html")
+        return render_template("login.html")
+    elif request.method == "POST":
+        # Begin credential validation here
+        """
+        1. Get the data from the form
+        2. Hash the password and check for username entry in DB
+        3. If match set session["authed"] = True
+        4. else set session["authed"] = False
+        5. Redirect on True, error on False
+        """
+        person = db.session.query(User).first()
+        email = request.form['email']
+        password = request.form['password']
+        return email + "   " + password + person.email + "   " + person.password
+
+    return None
+
 
 if __name__ == '__main__':
     # Create a random session key

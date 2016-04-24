@@ -12,7 +12,7 @@
 <body>
   <div class='jumbotron'>
     <h2>Vizit - Kinda arbitrary data visualizations!</h2>
-    <a id="viz_button" class="button" >Get Started Vizualizing!</a>
+    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
     <p> Or you can login or register below. </p>
   </div>
   <div class='container'>
@@ -20,10 +20,17 @@
       <div class="form">
         <input type="text" placeholder="Enter your email" />
         <input type="text" placeholder="Password" />
-	<input type="submit" value="Login" />
+	<input id="form_sub" type="submit" value="Login" />
 	<a href="">Lost your password?</a>
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    document.getElementById("form_sub").addEventListener("click", function () {
+        console.log("Should be redirecting");
+        window.location =  "http://localhost:5000/login";
+    })
+  </script>
 </body>
 </html>

@@ -1,15 +1,21 @@
-html {
-	background-color: #3C3940;
+﻿html {
+	
 }
 
 body {
-	background-color: #3C3940;
 	/*background-image: url('../assets/sayagata-400px/sayagata-400px/sayagata-400px.png');*/
 	padding: 0px, 0px, 0px, 10px;
 }
 
+.wrapper { width:100%; margin:0px auto; background-color: #3C3940; }
+
+.header { }
+
 .container {
-	width: 70%;
+	width: 90%;
+	margin-left:50px;
+	padding-bottom:5%;
+	background-color:white;
 	/*Colors: primary color 0*/
 	/*background-color: #3C3940;*/
 }
@@ -20,7 +26,7 @@ body {
 	text-align: center;
 	font-size: 34px;
 	height: 240px;
-	background-image: url('../assets/sayagata-400px/sayagata-400px/sayagata-400px.png');
+	background-image: url('../images/sayagata-400px.png');
 }
 
 .linkbar {
@@ -28,11 +34,68 @@ body {
     background-color: #3C3970;
 }
 
+.menubar { padding-top:20px; padding-bottom:20px }
+
+.listform {
+    width:80%; 
+    margin:0 auto;
+    text-align:center; }
+
+.listbox { margin:0 auto; width:60%;
+	height: 30px;
+	background: #fff;
+	padding: 5px;
+	font-size: 16px;
+	border: 2px solid #3C3940;
+	transition: all 0.3s ease;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.listSubmit { background: #3D60A6;
+    width: 100px;
+    padding: 8px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.loginbar { float:right; margin-right: 100px }
+
+label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-size:16pt}
+
+.loginFields {
+	height:24px;
+	font-size:14pt;
+	width:150px;
+}
+
+
+.loginButton { background: #3D60A6;
+    width: 100px;
+    padding: 6px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
 .form{
 	width: 400px;
 	height: 230px;
 	background: #edeff1;
-	margin: 0px auto;
 	padding-top: 20px;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -59,15 +122,28 @@ body {
     background: #4876D1;
 }
 
-input[type="text"]:focus{
+table.center {
+	width:60%;
+    margin-left:auto; 
+    margin-right:auto;	
+    border: 4px solid #3C3940;
+    border-collapse:collapse;
+  }
+
+table.center tr{
+	font-size:18pt;
+	border-bottom: 2px solid #3C3940;
+}
+
+input[type=text]:focus{
 	border: 2px solid #3D60A6;
 }
 
-input[type="submit"]{
+input[type=submit]{
     display: block;
     /*background: #1abc9d;*/
     background: #3D60A6;
-    width: 314px;
+    width: 814px;
     padding: 12px;
     cursor: pointer;
     color: #fff;
@@ -80,27 +156,21 @@ input[type="submit"]{
     transition: all 0.3s ease;
 }
 
-input[type="text"]{
-	display: block;
-	width: 309px;
-	height: 35px;
-	margin: 15px auto;
-	background: #fff;
-	border: 0px;
-	padding: 5px;
-	font-size: 16px;
-	border: 2px solid #fff;
-	transition: all 0.3s ease;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+input[type=text]{
 }
 
-input[type="text"]:focus{
+input[type=text]:focus{
 	border: 2px solid #3D60A6;
 }
 
-input[type="submit"]:hover{
+
+input[type=password]:focus{
+	border: 2px solid #3D60A6;
+}
+
+
+
+input[type=submit]:hover{
 	background: #4876D1;
 }
 
