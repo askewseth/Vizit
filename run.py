@@ -2,6 +2,8 @@
 import random
 import StringIO
 import os
+import csv
+import math
 
 from flask import Flask, make_response, render_template, request, url_for, redirect
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -24,12 +26,16 @@ def upload():
 
 @app.route("/uploaded/", methods=["POST"])
 def uploaded():
+    """Upload csv file."""
+    # Get the target path
     target = os.path.join(APP_ROOT, "uploads/")
     print target
 
+    # Make sure Directory exists
     if not os.path.isdir(target):
         os.mkdir(target)
 
+    # Save file(s)
     for f in request.files.getlist("file"):
         print f
         filename = f.filename
@@ -37,7 +43,29 @@ def uploaded():
         print destination
         f.save(destination)
 
-    return render_template("complete.html")
+    # Display CSV file contents
+    try:
+        with open(destination, 'r+') as f:
+            reader = csv.reader(f)
+            rows = [row for row in reader]
+            assert type(rows[0]) == list, "ROW ELEMENT'S WEREN'T LISTS"
+
+        avgs, stds, sters = [], [], []
+        for row in rows:
+            row = map(float, row)
+            df = pd.DataFrame(row)
+            avgs.append(float(df.mean().values[0]))
+            stds.append(float(df.std().values[0]))
+            sters.append(float(df.std().values[0]/math.sqrt(len(df))))
+        data = zip(range(1, len(avgs)+1), avgs, stds, sters)
+
+        return render_template("complete.html",
+                               rows=rows,
+                               data=data
+                               )
+
+    except Exception as e:
+        return render_template('error.html', error=e)
 
 
 @app.route('/', methods=["GET", "POST"])
