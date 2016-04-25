@@ -68,8 +68,8 @@ def uploaded():
         return render_template('error.html', error=e)
 
 
-@app.route('/', methods=["GET", "POST"])
-@app.route('/<dim>/', methods=["GET", "POST"])
+@app.route('/ngrid/', methods=["GET", "POST"])
+@app.route('/ngrid/<dim>/', methods=["GET", "POST"])
 def grid(dim='5,5'):
     try:
         try:
@@ -94,10 +94,7 @@ def grid(dim='5,5'):
                 cols = []
                 for iy in range(y):
                     index = str(ix) + ',' + str(iy)
-                    # try:
                     cols.append(request.form[index])
-                    # except Exception as e:
-                        # print e
                 rows.append(cols)
         else:
             rows = [[0]]
@@ -118,7 +115,7 @@ def grid(dim='5,5'):
         rows = [["hello"], ["goodbye"]]
 
         try:
-            dfs = [pd.DataFrame(x) for x in rows]
+            dfs = [pd.DataFrame(i) for i in rows]
             averages = map(lambda x: x.mean(), dfs)
             standarddevs = map(lambda x: x.std(), dfs)
             solutions = reduce(zip, [averages, standarddevs])
@@ -137,7 +134,8 @@ def grid(dim='5,5'):
     except Exception as e:
         return render_template('error.html',error=e)
 
-@app.route('/ngrid/', methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
+@app.route('/<dim>/', methods=["GET", "POST"])
 def ngrid(dim='5,5'):
     try:
         # if request.method == "POST":
@@ -161,7 +159,8 @@ def ngrid(dim='5,5'):
             rows = [[0]]
 
         try:
-            dfs = [pd.DataFrame(i) for i in rows]
+            dfs = [pd.Series(i) for i in rows]
+            # dfs = [pd.DataFrame(map(float, i)) for i in rows]
             # averages = map(lambda x: x.mean().values[0], dfs)
             averages = map(lambda x: x.mean(), dfs)
             # standarddevs = map(lambda x: x.std().values[0], dfs)
