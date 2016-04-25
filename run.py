@@ -105,9 +105,9 @@ def grid(dim='5,5'):
         if request.method == 'POST':
             extra = True
             nrows = [filter(None, i) for i in rows]
-            dfs = map(lambda x: pd.DataFrame(x), nrows)
-            averages = map(lambda x: float(x.mean()), dfs)
-            stddev = map(lambda x: float(x.std()), dfs)
+            dfs = map(lambda x: pd.Series(x), nrows)
+            averages = map(lambda x: x.mean(), dfs)
+            stddev = map(lambda x: x.std(), dfs)
             averages, stddev = "", ""
         else:
             extra, averages, stddev = False, None, None
@@ -159,18 +159,39 @@ def ngrid(dim='5,5'):
             rows = [[0]]
 
         try:
-            dfs = [pd.Series(i) for i in rows]
-            # dfs = [pd.DataFrame(map(float, i)) for i in rows]
-            # averages = map(lambda x: x.mean().values[0], dfs)
-            averages = map(lambda x: x.mean(), dfs)
-            # standarddevs = map(lambda x: x.std().values[0], dfs)
-            standarddevs = map(lambda x: x.std(), dfs)
-            # standarderrors = map(lambda x: x.std().values[0]/float(np.sqrt(x.count().values[0])), dfs)
-            # solutions = reduce(zip, [averages, standarddevs, standarderrors])
-            # solutions = reduce(zip, [averages, standarddevs])
-            solutions = zip(averages, standarddevs)
-        except:
-            solutions = [[]]
+            rows = [map(float, r) for r in rows]
+        except Exception as e:
+            rows = [r for r in rows]
+
+        rows = [filter(None, i) for i in rows]
+        rows = [map(float, i) for i in rows]
+        dfs = [pd.Series(i) for i in rows]
+        print type(dfs)
+        print type(dfs[0])
+        print dfs[0].mean()
+        try:
+            averages = [x.mean() for x in dfs]
+            # averages = map(lambda x: x.mean(), dfs)
+        except Exception as e:
+            return render_template('error.html', error=e)
+        # averages = map(lambda x: x.mean().values[0], dfs)
+        # standarddevs = map(lambda x: x.std().values[0], dfs)
+        standarddevs = map(lambda x: x.std(), dfs)
+        # stderr = [float(x.std())/math.sqrt(x.count()) for x in dfs if x.count() != 0 else 0]
+        stderr = []
+        for x in dfs:
+            if x.count() == 0:
+                stderr.append(0)
+            else:
+                stderr.append(float(x.std())/math.sqrt(x.count()))
+
+        # stderr = map(lambda x: float(x.std())/math.sqrt(x.count()), dfs)
+        # standarderrors = map(lambda x: x.std()/float(math.sqrt(x.count()), dfs)
+        # solutions = reduce(zip, [averages, standarddevs, standarderrors])
+        # solutions = reduce(zip, [averages, standarddevs])
+        solutions = zip(averages, standarddevs, stderr)
+        # except:
+            # solutions = [[]]
         x, y = orig
         # rows = zip(solutions, rows)
         finalsolutions = zip(solutions, rows)
