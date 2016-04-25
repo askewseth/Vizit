@@ -15,31 +15,30 @@ import pandas as pd
 
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "uploads/"
-app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-@app.route('/upload/', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
+@app.route("/upload/")
+def upload():
+    return render_template("upload.html")
+
+@app.route("/uploaded/", methods=["POST"])
+def uploaded():
+    target = os.path.join(APP_ROOT, "uploads/")
+    print target
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    for f in request.files.getlist("file"):
+        print f
+        filename = f.filename
+        destination = "/".join([target, filename])
+        print destination
+        f.save(destination)
+
+    return render_template("complete.html")
+
 
 @app.route('/', methods=["GET", "POST"])
 @app.route('/<dim>/', methods=["GET", "POST"])
@@ -135,12 +134,14 @@ def ngrid(dim='5,5'):
 
         try:
             dfs = [pd.DataFrame(i) for i in rows]
-            averages = map(lambda x: x.mean().values[0], dfs)
-            standarddevs = map(lambda x: x.std().values[0], dfs)
+            # averages = map(lambda x: x.mean().values[0], dfs)
+            averages = map(lambda x: x.mean(), dfs)
+            # standarddevs = map(lambda x: x.std().values[0], dfs)
+            standarddevs = map(lambda x: x.std(), dfs)
             # standarderrors = map(lambda x: x.std().values[0]/float(np.sqrt(x.count().values[0])), dfs)
             # solutions = reduce(zip, [averages, standarddevs, standarderrors])
             # solutions = reduce(zip, [averages, standarddevs])
-            solutions = zip([averages, standarddevs])
+            solutions = zip(averages, standarddevs)
         except:
             solutions = [[]]
         x, y = orig
