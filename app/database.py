@@ -5,7 +5,7 @@ from database_model import User, Base, Query
 engine = create_engine('sqlite:///vizit_database.db')
 
 Base.metadata.bind = engine
- 
+
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
@@ -24,3 +24,5 @@ def addUser(user, pass_wd, mail):
     session.add(new_user)
     session.commit()
 
+#Test the methods out
+addUser("test", "password", "test@mail.com")

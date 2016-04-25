@@ -102,45 +102,19 @@ def api_plot():
         # Create a new plot
         p = Plotter()
         # What was the type of plot selected?
-        # Add this later
+        plot_type = request.json["type"]
 
-        # test data...
-        #data = [[1,2], [3,4]]
-        #data = request.form["data"]
         # probably need to format the data
         # parse it out into a dict
         data = request.json["data"]
         print type(data)
         #process the data
 
-        p.circle(parse_data(data))
+        p.plot(data, plot_type)
         # process the script
         script = p.script.replace("<script", "<script id='plotscript'")
         html = p.div + "\n" + script
         return html
-
-# Parse the incoming json data into a dict of numbers
-def parse_data(data):
-    # data: {'x' : '1,2,3,...,n', 'y' : '5,6,7,...,n'}
-    xdata = data['x']
-    ydata = data['y']
-
-    # process the data
-    xdata_split = xdata.split(',')
-    ydata_split = ydata.split(',')
-    xdata_float = []
-    ydata_float = []
-
-    #parse the data into ints
-    for n in xdata_split:
-        xdata_float.append(float(n))
-
-    for n in ydata_split:
-        ydata_float.append(float(n))
-
-    print xdata_float
-    print ydata_float
-    return [xdata_float, ydata_float]
 
 @app.route('/stats/', methods=["GET", "POST"])
 def stats():

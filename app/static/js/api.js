@@ -10,14 +10,15 @@ var sub_data = function () {
     // Get the data from the form
     var xdata = document.getElementById("data_x").value;
     var ydata = document.getElementById("data_y").value;
+    var plottype = document.getElementsByName("plotselect")[0].value;
     console.log(xdata + " " + ydata);
-    console.log(JSON.stringify({data : {x : xdata, y : ydata}}));
+    console.log(JSON.stringify({data : {x : xdata, y : ydata}, type : plottype}));
 
     xhr.open("PUT", url, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     // Make sure this is correct or the rest of the code won't work.
     xhr.responseType = "text";
-    xhr.send(JSON.stringify({data : {x : xdata, y : ydata}}));
+    xhr.send(JSON.stringify({data : {x : xdata, y : ydata}, type : plottype}));
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
