@@ -2,6 +2,7 @@
 import random
 import os
 import StringIO
+import flask
 
 from flask import Flask, make_response, render_template, request, redirect, url_for, session
 from flask_restful import Resource, Api, reqparse
@@ -11,6 +12,7 @@ from flask.sessions import SessionInterface, SessionMixin
 from itsdangerous import URLSafeTimedSerializer, BadSignature
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+from plotter import Plotter
 
 """from OpenSSL import SSL
 
@@ -100,8 +102,47 @@ def api_plot():
         return '<p>Eventually this will be a plot</p>'
     elif request.method == "PUT":
         # Create a new plot
-        return '<p>Eventually this will be a plot</p>'
+        p = Plotter()
+        # What was the type of plot selected?
+        # Add this later
 
+        # test data...
+        #data = [[1,2], [3,4]]
+        #data = request.form["data"]
+        # probably need to format the data
+        # parse it out into a dict
+        data = request.json["data"]
+        print type(data)
+        #process the data
+
+        p.circle(parse_data(data))
+        # process the script
+        script = p.script.replace("<script", "<script id='plotscript'")
+        html = p.div + "\n" + script
+        return html
+
+# Parse the incoming json data into a dict of numbers
+def parse_data(data):
+    # data: {'x' : '1,2,3,...,n', 'y' : '5,6,7,...,n'}
+    xdata = data['x']
+    ydata = data['y']
+
+    # process the data
+    xdata_split = xdata.split(',')
+    ydata_split = ydata.split(',')
+    xdata_float = []
+    ydata_float = []
+
+    #parse the data into ints
+    for n in xdata_split:
+        xdata_float.append(float(n))
+
+    for n in ydata_split:
+        ydata_float.append(float(n))
+
+    print xdata_float
+    print ydata_float
+    return [xdata_float, ydata_float]
 
 @app.route('/stats/', methods=["GET", "POST"])
 def stats():
@@ -147,8 +188,11 @@ def stats():
 @app.route('/')
 def home():
     """Test home page."""
-    """session["test"] = "this is a test"
-    print session["test"]"""
+    session["test"] = "this is a test"
+    print session["test"]
+    for k in session:
+        print k + " : " + session[k]
+
     return render_template('default.html')
 
 @app.route('/login', methods=["GET", "POST"])

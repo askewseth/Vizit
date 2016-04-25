@@ -2,20 +2,29 @@
 <head>
   <title>Vizit</title>
   <script type="text/javascript" src="/static/js/api.js"></script>
+  <link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css"
+    rel="stylesheet" type="text/css">
+  <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>
 </head>
 
 <body>
 
   <div id="data_form_cont">
     <form id="data_form">
-      <input id="data_input" type="text">
-      <input id="data_form_sub" type="button" value="submit data">
+      x values:
+      <input id="data_x" type="text"><br>
+      y values:
+      <input id="data_y" type="text"><br>
+      <!--<input id="data_form_sub" type="button" value="submit data">-->
+      <button type="submit">Submit Data</button>
     </form>
   </div>
   <div id="plot-container"></div>
 
   <script type="text/javascript">
-    document.getElementById("data_form_sub").addEventListener("click", function () {
+    document.getElementById("data_form").addEventListener("submit", function (e) {
+        e.preventDefault();
         sub_data();
     });
   </script>
