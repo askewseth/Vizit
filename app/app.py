@@ -188,11 +188,10 @@ def stats():
 @app.route('/')
 def home():
     """Test home page."""
-    session["test"] = "this is a test"
-    print session["test"]
-    for k in session:
-        print k + " : " + session[k]
-
+    """if session["authed"] == "True":
+        return render_template('loggedIn.html')
+    else:
+        return render_template('default.html')"""
     return render_template('default.html')
 
 @app.route('/login', methods=["GET", "POST"])
@@ -216,7 +215,7 @@ def login():
         password = request.form['password']
         if db.login(email,password):
             session["authed"] = True
-            return email + "   " + password
+            return render_template('loggedIn.html')
         else:
             session["authed"] = False
             return render_template('failedLogin.html')
