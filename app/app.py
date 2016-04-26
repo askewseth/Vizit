@@ -13,6 +13,8 @@ from itsdangerous import URLSafeTimedSerializer, BadSignature
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from plotter import Plotter
+import message as messages
+
 
 """from OpenSSL import SSL
 
@@ -158,6 +160,11 @@ def stats():
         avginp = 'NO INPUT'
         otherval = str(avginp)
         avg, stderror, count, med, std, minn, q1, q2, q3, maxx = [0 for x in range(10)]
+        if 'user' in session:
+            status = messages.returnLoggedInMenuBar()
+        else:
+            status = messages.returnLoggedOutMenuBar()
+        
     else:
         val = 'INPUT'
         # Get Values from HTML
@@ -170,7 +177,11 @@ def stats():
         std, stderror = sc.std(avginp)
         # Get all of the pandas statistcal output
         count, med, std, minn, q1, q2, q3, maxx = sc.getDescription(avginp)
-    return render_template('stats.html',
+        if 'user' in session:
+            status = messages.returnLoggedInMenuBar()
+        else:
+            status = messages.returnLoggedOutMenuBar()
+    return render_template('stats.html', menubar=status,
                            val=val,
                            ov=otherval,
                            avg=avg,
@@ -188,11 +199,15 @@ def stats():
 @app.route('/')
 def home():
     """Test home page."""
-    """if session["authed"] == "True":
-        return render_template('loggedIn.html')
+    if 'user' in session:
+        status = messages.returnLoggedInMenuBar()
+        mess = messages.returnWelcomeLoggedIn()
+        
     else:
-        return render_template('default.html')"""
-    return render_template('default.html')
+        status = messages.returnLoggedOutMenuBar()
+        mess = messages.returnWelcome()
+
+    return render_template('default.html', menubar=status, tag=mess)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -215,10 +230,35 @@ def login():
         password = request.form['password']
         if db.login(email,password):
             session["authed"] = True
-            return render_template('loggedIn.html')
+            session["user"] = email
+            status = messages.returnLoggedInMenuBar()
+            mess = messages.returnWelcomeLoggedIn()
         else:
             session["authed"] = False
+            status = messages.returnLoggedOutMenuBar()
+            mess = messages.returnLoginError()
             return render_template('failedLogin.html')
+
+    return render_template('default.html', menubar=status, tag=mess)
+
+@app.route('/logout', methods=["GET"])
+def logout():
+    """Login in page
+    handle server side logic here
+    """
+    status = messages.returnLoggedOutMenuBar()
+    mess = messages.returnWelcome()
+    if request.method == "GET":
+        #Log the user out if logged in.
+        if 'user' in session:
+            session.clear()
+            return render_template('default.html',
+                                   menubar=status,
+                                   tag=mess)
+        else:
+            return render_template('default.html',
+                                   menubar=status,
+                                   tag=mess)
 
     return None
 
@@ -226,15 +266,20 @@ def login():
 def register():
     if request.method == "GET":
         # Render the registration page
-        return render_template("register.html")
+        mess = messages.returnDisclaimer()
+        return render_template("register.html", tag=mess)
     elif request.method == "POST":
         # Create an account
         email = request.form['email']
         password = request.form['pass1']
         if db.addUser( email, password ):
-            return "Success!!"
+            status = messages.returnLoggedInMenuBar
+            mess = messages.returnNewAccountSuccessful()
+            return render_template("default.html", menubar=status, tag=mess)
         else:
-            return email
+            status = messages.returnLoggedOutMenuBar
+            mess = messages.returnNewAccountFailure()
+            return render_template("register.html", menubar=status, tag=mess)
         
     elif request.method == "PUT":
         # Create an account
@@ -265,34 +310,11 @@ def plot_img():
     response.mimetype = 'image/png'
     return response
 
-@app.route('/testlogin', methods=["GET", "POST"])
-def testlogin():
-    """Login in page
-    handle server side logic here
-    """
-    if request.method == "GET":
-        #render_template("login.html")
-        return render_template("login.html")
-    elif request.method == "POST":
-        # Begin credential validation here
-        """
-        1. Get the data from the form
-        2. Hash the password and check for username entry in DB
-        3. If match set session["authed"] = True
-        4. else set session["authed"] = False
-        5. Redirect on True, error on False
-        """
-        person = db.session.query(User).first()
-        email = request.form['email']
-        password = request.form['password']
-        return email + "   " + password + person.email + "   " + person.password
-
-    return None
-
 
 if __name__ == '__main__':
     # Create a random session key
-    app.secret_key = os.urandom(24)
+    #app.secret_key = os.urandom(24)
+    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     #CONTEXT = ('./static/keys/server.crt', './static/keys/server.key')
     #app.run(host='127.0.0.1', port='5000', debug=True, ssl_context=CONTEXT)
     app.run(host='127.0.0.1', port=5000, debug=True)

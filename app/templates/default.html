@@ -14,18 +14,7 @@
 			    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
 			    <p> Or you can login or register below.</p>
 			  	</div>
-			  	<div class="menubar">
-					<div class="loginbar">				
-						<form action="/login" method="post">
-						<span><label class="loginFormat">Enter Email:</label><input class="loginFields" type="text" name="email"><label class="loginFormat">Password:</label><input class="loginFields" type="password" name="password">
-						<button class="loginButton" type="submit">LOGIN</button>
-						</span>
-						</form>
-						<form action="/register" method="get">
-							<button class="newAccountButton" type="submit">Create Account</button>
-						</form>
-					</div>
-				</div>
+			  	<div class="menubar">{{ menubar }}</div>
 				
 			  </div>
 			  <div class="content">
@@ -41,10 +30,7 @@
 					        <button type="submit" class="listSubmit">Submit</button></span>
 					      </div>
 					    </form>
-					    <div class="infobox"><p style="padding-left:30px; padding-right:30px">Welcome to the Vizit statistical web site.  The purpose of this site is to provide users a quick reference to statistical data calculated 
-					    from a set of numbers.  Enter any given comma separated values into the text box above to give it a try.  You can also 
-							<a href="/register">create an account</a> for additional 
-					    features such as graph plots and query history.</p></div>					
+					    <div class="infobox">{{ tag }}</div>					
 				  </div>
 			  </div>
 			  <div style="padding-bottom:40px" class='footer'>

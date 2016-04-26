@@ -14,18 +14,7 @@
 			    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
 			    <p> Or you can login or register below.</p>
 			  	</div>
-			  	<div class="menubar">
-					<div class="loginbar">				
-						<form action="/login" method="post">
-						<span><label class="loginFormat">Enter Email:</label><input class="loginFields" type="text" name="email"><label class="loginFormat">Password:</label><input class="loginFields" type="password" name="password">
-						<button class="loginButton" type="submit">LOGIN</button>
-						</span>
-						</form>
-						<form action="/register" method="get">
-							<button class="newAccountButton" type="submit">Create Account</button>
-						</form>
-					</div>
-				</div>
+			  	<div class="menubar">{{ menubar }}</div>
 				
 			  </div>
 			  <div class="content">
