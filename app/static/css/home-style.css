@@ -12,10 +12,11 @@ body {
 .header { }
 
 .container {
-	width: 90%;
+	width: 70%;
 	margin-left:50px;
 	padding-bottom:5%;
 	background-color:white;
+	height:auto;
 	/*Colors: primary color 0*/
 	/*background-color: #3C3940;*/
 }
@@ -34,7 +35,7 @@ body {
     background-color: #3C3970;
 }
 
-.menubar { padding-top:20px; padding-bottom:20px }
+.menubar { padding-top:20px; padding-bottom:20px; width:90%; }
 
 .listform {
     width:80%; 
@@ -136,6 +137,31 @@ table.center tr{
 	font-size:18pt;
 	border-bottom: 2px solid #3C3940;
 }
+
+table.register {
+	width:480px;
+	background-color:aliceblue;
+    margin-left:auto; 
+    margin-right:auto;	
+    border: 2px solid #3C3940;
+    column-width:200px;
+
+}
+
+table.register td {
+    column-width:250px;
+}
+
+#allignRight { text-align:right; padding:5px; font-size:15pt; }
+
+
+.disclaimerBox { margin-top:20px; margin-bottom:20px; margin-left:auto; margin-right:auto; width:50%; font-size:12pt }
+
+.newuserLabel {
+	text-align:right;
+}
+
+
 
 input[type=text]:focus{
 	border: 2px solid #3D60A6;

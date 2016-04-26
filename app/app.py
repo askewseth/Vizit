@@ -202,7 +202,7 @@ def login():
     """
     if request.method == "GET":
         #render_template("login.html")
-        return render_template("login.html")
+        return render_template("default.html")
     elif request.method == "POST":
         # Begin credential validation here
         """
@@ -215,10 +215,11 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if db.login(email,password):
+            session["authed"] = True
             return email + "   " + password
-        else: return render_template('failedLogin.html')
-        
-        return email + "   " + password
+        else:
+            session["authed"] = False
+            return render_template('failedLogin.html')
 
     return None
 
@@ -229,11 +230,18 @@ def register():
         return render_template("register.html")
     elif request.method == "POST":
         # Create an account
-        pass
+        email = request.form['email']
+        password = request.form['pass1']
+        if db.addUser( email, password ):
+            return "Success!!"
+        else:
+            return email
+        
     elif request.method == "PUT":
         # Create an account
         pass
     return None
+
 
 @app.route('/plot_data')
 def plot_data():

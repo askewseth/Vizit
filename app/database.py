@@ -42,8 +42,14 @@ def login(mail, pass_wd):
         else:
             return False
 
-def addUser(user, pass_wd, mail):
-    new_user = User(username=user, password=pass_wd, email=mail)
-    session.add(new_user)
-    session.commit()
+def addUser(mail, pass_wd):
+    email = session.query(User).filter(User.email == mail).one_or_none()
+    if email == None:
+        new_user = User(email=mail, password=pass_wd)
+        session.add(new_user)
+        session.commit()
+        return True
+    else:
+        return False
+        
 
