@@ -13,11 +13,17 @@
   <div id="data_form_cont">
     <form id="data_form">
       x values:
-      <input id="data_x" type="text"><br>
+      <input id="data_x" type="text"
+             onfocus="if this.value=='e.g. 1,2,3,...,n' this.value = ''"
+             placeholder="e.g. 1,2,3,...,n"
+             required><br>
       y values:
-      <input id="data_y" type="text"><br>
+      <input id="data_y" type="text"
+             onfocus="if this.value=='e.g. 1,2,4,...,n' this.value = ''"
+             placeholder="e.g. 1,2,3,...,n"
+             required><br>
       <!--<input id="data_form_sub" type="button" value="submit data">-->
-      <select name="plotselect">
+      <select name="plotselect" onchange="changehelp();" defaultvalue="scatter">
         <option value="scatter">scatter</option>
         <option value="line">line</option>
         <option value="annulus">annulus</option>
@@ -34,6 +40,33 @@
         e.preventDefault();
         sub_data();
     });
+
+    var changehelp = function () {
+        var selection = document.getElementsByName("plotselect")[0].value;
+
+        var multihelp = "e.g. [1,2,...,n],[3,4,...,n],...,n";
+        var singlehelp = "e.g. 1,2,3,...,n";
+
+        if (["multi_line", "patch"].indexOf(selection) >= 0) {
+            document.getElementById("data_x").placeholder = multihelp;
+            document.getElementById("data_x").onchange = function () {
+                if (this.value==multihelp) this.value = "";
+            };
+            document.getElementById("data_y").placeholder = multihelp;
+            document.getElementById("data_y").onchange = function () {
+                if (this.value==multihelp) this.value = "";
+            };
+        } else {
+            document.getElementById("data_x").placeholder = singlehelp;
+            document.getElementById("data_x").onchange = function () {
+                if (this.value==singlehelp) this.value = "";
+            };
+            document.getElementById("data_y").placeholder = singlehelp;
+            document.getElementById("data_y").onchange = function () {
+                if (this.value==singlehelp) this.value = "";
+            };
+        }
+    };
   </script>
 
 </body>

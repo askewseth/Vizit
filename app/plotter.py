@@ -30,7 +30,9 @@ class Plotter:
     # ex: x: [[1,2,3,...n],[...,...]] y: [[4,5,6,...,n],[...,...]]
     def multi_line(self, data):
         plot = figure(plot_width=400, plot_height=400)
-        plot.multi_line(data[0], data[1], color["red", "green"])
+        plot.multi_line(data[0], data[1], color=["red", "green"])
+        show(plot)
+        self.script, self.div = components(plot)
 
     # the data for this must be two arrays of arrays
     # ex: x: [[1,2,3,...n],[...,...]] y: [[4,5,6,...,n],[...,...]]
@@ -57,7 +59,10 @@ class Plotter:
         # if the type requires multi arrays
         if t in ["multi_line", "patch"]:
             # parse the data differently
-            return None
+            # expect list of lists
+            print data
+            d = [data['x'], data['y']]
+            return d
         else:
             # data: {'x' : '1,2,3,...,n', 'y' : '5,6,7,...,n'}
             xdata = data['x']
