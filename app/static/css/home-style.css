@@ -1,42 +1,147 @@
-html {
-    background-color: #3C3940;
+﻿html {
+	
 }
 
 body {
-    background-color: #3C3940;
-    /*background-image: url('../assets/sayagata-400px/sayagata-400px/sayagata-400px.png');*/
-    padding: 0px, 0px, 0px, 10px;
+	/*background-image: url('../assets/sayagata-400px/sayagata-400px/sayagata-400px.png');*/
+	padding: 0px, 0px, 0px, 10px;
 }
 
+.wrapper { width:100%; margin:0px auto; background-color: #3C3940; }
+
+.header { }
+
 .container {
-    width: 70%;
-    /*Colors: primary color 0*/
-    /*background-color: #3C3940;*/
+	width: 70%;
+	margin-left:50px;
+	padding-bottom:5%;
+	background-color:white;
+	height:auto;
+	/*Colors: primary color 0*/
+	/*background-color: #3C3940;*/
 }
 
 .jumbotron {
-    font-family: 'Source Sans Pro', sans-serif;
-    color: #3D60A6;
-    text-align: center;
-    font-size: 34px;
-    height: 240px;
-    background-image: url('../assets/sayagata-400px/sayagata-400px/sayagata-400px.png');
+	font-family: 'Source Sans Pro', sans-serif;
+	color: #3D60A6;
+	text-align: center;
+	font-size: 34px;
+	height: 240px;
+	background-image: url('../images/sayagata-400px.png');
 }
 
-.linkbar {
-    height: 40px;
-    background-color: #3C3970;
+
+.menubar { padding-top:20px; padding-bottom:20px; width:100%; }
+
+.menubar form,
+.menubar for div {
+	display:inline-block;
 }
+.menubar button{
+	display:inline;
+	vertical-align:middle;
+}
+
+.linksbar {
+	text-align:center;
+}
+
+.listform {
+    width:80%; 
+    margin:0 auto;
+    text-align:center; }
+
+.listbox { margin:0 auto; width:60%;
+	height: 30px;
+	background: #fff;
+	padding: 5px;
+	font-size: 16px;
+	border: 2px solid #3C3940;
+	transition: all 0.3s ease;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.listSubmit { background: #3D60A6;
+    width: 100px;
+    padding: 8px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.loginbar { float:right; margin-right: 15%; }
+
+label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-size:16pt}
+
+.loginFields {
+	height:24px;
+	font-size:14pt;
+	width:150px;
+}
+
+
+.loginButton { background: #3D60A6;
+    width: 100px;
+    padding: 6px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.newAccountButton { background: #3D60A6;
+    width: 140px;
+    padding: 6px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.homepageButton { background: #3D60A6;
+    width: 180px;
+    padding: 6px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+
+
+.infobox { margin-top:60px; margin-left:auto; margin-right:auto; width:60%; font-size:14pt; border:1pt black solid; background-color:aliceblue; }
 
 .form{
-    width: 400px;
-    height: 230px;
-    background: #edeff1;
-    margin: 0px auto;
-    padding-top: 20px;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+	width: 400px;
+	height: 230px;
+	background: #edeff1;
+	padding-top: 20px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
 }
 
 .button {
@@ -53,22 +158,95 @@ body {
     -webkit-border-radius: 5px;
     font-size: 17px;
     transition: all 0.3s ease;
-    text-decoration: none;
 }
 
 .button:hover {
     background: #4876D1;
 }
 
-input[type="text"]:focus{
+table.center {
+	width:60%;
+    margin-left:auto; 
+    margin-right:auto;	
+    border: 4px solid #3C3940;
+    border-collapse:collapse;
+  }
+
+table.center tr{
+	font-size:18pt;
+	border-bottom: 2px solid #3C3940;
+}
+
+
+table.center tr:nth-child(even) {
+    border-bottom: 1px solid #000;
+    background-color:#CCCCCC;
+}
+
+table.register {
+	width:480px;
+	background-color:aliceblue;
+    margin-left:auto; 
+    margin-right:auto;	
+    border: 2px solid #3C3940;
+    column-width:200px;
+
+}
+
+table.register td {
+    column-width:250px;
+}
+
+#allignRight { text-align:right; padding:5px; font-size:15pt; }
+
+
+.disclaimerBox { margin-top:20px; margin-bottom:20px; margin-left:auto; margin-right:auto; width:50%; font-size:12pt }
+
+.newuserLabel {
+	text-align:right;
+}
+
+#menu { height: 30px; margin-bottom: 0px; }
+ul#menu {
+    padding: 0px;
+}
+
+ul#menu li {
+    display: inline;
+}
+
+ul#menu li a {
+    background-color:#3D60A6;
+    color: white;
+    margin-left:100px;
+    padding: 6px;
+    cursor: pointer;
+    border: 0px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+
+
+}
+
+ul#menu li a:hover {
+    background-color: white;
+    color:#6665FE;
+}
+
+
+
+input[type=text]:focus{
 	border: 2px solid #3D60A6;
 }
 
-input[type="submit"]{
+input[type=submit]{
     display: block;
     /*background: #1abc9d;*/
     background: #3D60A6;
-    width: 314px;
+    width: 814px;
     padding: 12px;
     cursor: pointer;
     color: #fff;
@@ -81,39 +259,22 @@ input[type="submit"]{
     transition: all 0.3s ease;
 }
 
-input[type="text"]{
-    display: block;
-    width: 309px;
-    height: 35px;
-    margin: 15px auto;
-    background: #fff;
-    border: 0px;
-    padding: 5px;
-    font-size: 16px;
-    border: 2px solid #fff;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+input[type=text]{
 }
 
-input[type="text"]:focus{
-    border: 2px solid #3D60A6;
+input[type=text]:focus{
+	border: 2px solid #3D60A6;
 }
 
-input[type="submit"]:hover{
-    background: #4876D1;
+
+input[type=password]:focus{
+	border: 2px solid #3D60A6;
 }
 
-a {
-    text-align: center;
-    font-family: Arial;
-    color: gray;
-    display: block;
-    margin: 15px auto;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 12px;
+
+
+input[type=submit]:hover{
+	background: #4876D1;
 }
 
 a:hover{

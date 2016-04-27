@@ -1,8 +1,116 @@
-<!doctype html>
-<head>
-  <title>Register</title>
-</head>
-<body>
-  <p>This will be the registration page</p>
-</body>
+﻿<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+	  <link rel="stylesheet" media="screen" href="static/css/home-style.css">
+	  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	  <script type="text/javascript">
+	  	function check()
+            {
+                if (document.getElementById('email').value=="")
+                {
+                	alert ("You must choose an email to sign up.  Please enter a value.");
+                    return false;
+                }
+                
+                 if (document.getElementById('pass1').value=="")
+                {
+                    alert ("You must enter a password to sign up.  Please enter a value.");
+                    return false;
+                }
+                
+                if (document.getElementById('pass2').value=="")
+                {
+                	alert ("Please re-enter your password in the confirmation box in order to continue.");
+                    return false;
+                }
+                
+				if (document.getElementById('pass1').value!== document.getElementById('pass2').value)
+                {
+					alert ("The passwords you entered do not match. Please check for errors and try again.");
+					document.getElementById('pass1').value = "";
+					document.getElementById('pass2').value = "";
+					document.getElementById('pass1').focus();
+
+                    return false;
+				}
+				
+				if (!document.getElementById('agreed').checked) 
+				{
+					alert ("You must accept the terms of agreement.  Please place a check in the appropriate box to continue.");
+                    return false;
+				}              
+                return true;
+            }
+	  </script>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class='jumbotron'>
+			    <h2>Vizit - Kinda arbitrary data visualizations!</h2>
+			    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
+			    <p> Or you can login or register below.</p>
+			  	</div>
+			  	<div class="menubar">
+					<div class="loginbar"><form action="/login" method="post">
+						<span><label class="loginFormat">Enter Email:</label><input class="loginFields" type="text" name="email"><label class="loginFormat">Password:</label><input class="loginFields" type="password" name="password">
+						<button class="loginButton" type="submit">LOGIN</button>
+						</span>
+					</form></div>
+				</div>
+				
+			  </div>
+			  <div class="content">
+			  
+				  <div class='container' style="margin:auto">
+				  	<h2 style="text-align: center; font-size:26pt">Please take a moment to create an account</h2>
+					    <form class="newuser" action = "/register/" role="search" method="POST">
+					      <div>
+					      
+					      </div>
+					    </form>
+					    <div class="disclaimerBox">{{ tag }}</div>
+					    <div class="credentialsBox">
+					    <form action="/register"method="post">
+					    <table class ="register">
+								<tr>
+									<td id="allignRight" style="width: 180px"><label class="newuserLabel">Email Address:</label></td>
+									<td>
+									<input id="email" name="email" type="text" style="width: 90%"></td>
+								</tr>
+								<tr>
+									<td id="allignRight" style="width: 180px"><label class="newuserLabel">Password:</label></td>
+									<td>
+									<input id="pass1" name="pass1" type="password" style="width: 90%"></td>
+								</tr>
+								<tr>
+									<td id="allignRight" style="width: 180px"><label class="newuserLabel">Confirm Password:</label></td>
+									<td>
+									<input id="pass2" name="pass2" type="password" style="width: 90%"></td>
+								</tr>
+								<tr>
+									<td id="allignRight" style="width: 180px"><span><input name="agreed" id="agreed" type="checkbox" style="margin-right:10px"><label class="newuserLabel">Please check to agree to the terms.</label></span>
+									</td>
+									<td>
+									<input name="submitNewUser" style="width: 200px" type="submit" value="Create Account" onclick="return check()"></td>
+								</tr>
+							</table>
+							</form>
+						</div>					
+				  </div>
+			  </div>
+			  <div style="padding-bottom:40px" class='footer'>
+			  	<p style="text-align:center; color:white">Copyright 2016 - CoolGuys340</p>
+			  </div>
+		</div>
+	<script type="text/javascript">
+    document.getElementById("form_sub").addEventListener("click", function () {
+        console.log("Should be redirecting");
+        window.location =  "http://localhost:5000/login";
+    })
+  </script>
+
+	</body>
 </html>

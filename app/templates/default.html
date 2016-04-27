@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+	  <link rel="stylesheet" media="screen" href="static/css/home-style.css">
+	  <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class='jumbotron'>
+			    <h2>Vizit - Kinda arbitrary data visualizations!</h2>
+			    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
+			    <p> Or you can login or register below.</p>
+			  	</div>
+			  	<div class="menubar">{{ menubar }}</div>
+				
+			  </div>
+			  <div class="content">
+			  
+				  <div class='container' style="margin:auto">
+				  	<h2 style="text-align: center; font-size:26pt">Please enter a list of 
+					numerical values:</h2>
+					    <form class="listform" action = "/stats/" role="search" method="POST">
+					      <div><span>
+					        <input type="text" class="listbox" placeholder="Comma separated list of values.  Ex) 1,2,3,4,5" name="inputtxt"></span>
+					        
+					      <span>
+					        <button type="submit" class="listSubmit">Submit</button></span>
+					      </div>
+					    </form>
+					    <div class="infobox">{{ tag }}</div>					
+				  </div>
+			  </div>
+			  <div style="padding-bottom:40px" class='footer'>
+			  	<p style="text-align:center; color:white">Copyright 2016 - CoolGuys340</p>
+			  </div>
+		</div>
+	<script type="text/javascript">
+    document.getElementById("form_sub").addEventListener("click", function () {
+        console.log("Should be redirecting");
+        window.location =  "http://localhost:5000/login";
+    })
+  </script>
+
+	</body>
+</html>
