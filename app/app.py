@@ -237,7 +237,6 @@ def login():
             session["authed"] = False
             status = messages.returnLoggedOutMenuBar()
             mess = messages.returnLoginError()
-            return render_template('failedLogin.html')
 
     return render_template('default.html', menubar=status, tag=mess)
 
