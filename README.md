@@ -5,6 +5,8 @@ Just a demo of Plot.ly with Flask and python to allow users to visualize arbitra
 ### Dependencies
 
 - flask
-- plotly
+- bokeh
 - matplotlib
+
+The deps can be installed by using `pip`.
  
