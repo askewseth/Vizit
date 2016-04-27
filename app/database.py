@@ -51,7 +51,3 @@ def addUser(mail, pass_wd):
         return True
     else:
         return False
-        
-
-#Test the methods out
-addUser("test", "password", "test@mail.com")
