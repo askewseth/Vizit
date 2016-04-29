@@ -28,7 +28,7 @@ class Query(Base):
 engine = create_engine('sqlite:///vizitData.db')
 
 Base.metadata.bind = engine
- 
+
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
@@ -51,5 +51,3 @@ def addUser(mail, pass_wd):
         return True
     else:
         return False
-        
-

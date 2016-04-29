@@ -10,14 +10,22 @@ var sub_data = function () {
     // Get the data from the form
     var xdata = document.getElementById("data_x").value;
     var ydata = document.getElementById("data_y").value;
-    console.log(xdata + " " + ydata);
-    console.log(JSON.stringify({data : {x : xdata, y : ydata}}));
+    var postdata = {};
+    var plottype = document.getElementsByName("plotselect")[0].value;
 
     xhr.open("PUT", url, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     // Make sure this is correct or the rest of the code won't work.
     xhr.responseType = "text";
-    xhr.send(JSON.stringify({data : {x : xdata, y : ydata}}));
+
+    // We need to prepare the right type of data
+    if (["multi_line", "patch"].indexOf(plottype) >= 0) {
+        postdata = {data : {x : [xdata], y : [ydata]}, type : plottype};
+    } else {
+        postdata = {data : {x : xdata, y : ydata}, type : plottype};
+    }
+    console.log(postdata);
+    xhr.send(JSON.stringify(postdata));
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -34,4 +42,10 @@ var sub_data = function () {
             }
         }
     };
+};
+
+// validate the data input form
+var validate_form = function() {
+    var form = document.getElementById("data_form");
+    var plottype = document.getElementsByName("plotselect").value;
 };
