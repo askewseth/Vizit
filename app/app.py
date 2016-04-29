@@ -226,8 +226,8 @@ def login():
         4. else set session["authed"] = False
         5. Redirect on True, error on False
         """
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form['email'].strip()
+        password = request.form['password'].strip()
         if db.login(email,password):
             session["authed"] = True
             session["user"] = email
@@ -250,7 +250,8 @@ def logout():
     if request.method == "GET":
         #Log the user out if logged in.
         if 'user' in session:
-            session.clear()
+            session["authed"] = False
+            session.pop('user', None)
             return render_template('default.html',
                                    menubar=status,
                                    tag=mess)
@@ -269,8 +270,8 @@ def register():
         return render_template("register.html", tag=mess)
     elif request.method == "POST":
         # Create an account
-        email = request.form['email']
-        password = request.form['pass1']
+        email = request.form['email'].strip()
+        password = request.form['pass1'].strip()
         if db.addUser( email, password ):
             status = messages.returnLoggedInMenuBar
             mess = messages.returnNewAccountSuccessful()
@@ -290,7 +291,13 @@ def register():
 def plot_data():
     """ We need to render the page and get the data
     from the user and then generate the appropriate html"""
-    return render_template('plot.html')
+    if 'user' in session:
+        return render_template('plot.html')
+    else:
+        stats = messages.returnLoggedOutMenuBar()
+        mess = messages.returnWelcome()
+        return redirect("/")
+
 
 @app.route('/plot.png')
 def plot_img():
