@@ -1,52 +1,79 @@
-<!doctype html>
-<head>
-  <title>Vizit</title>
-  <script type="text/javascript" src="/static/js/api.js"></script>
-  <link
-    href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css"
-    rel="stylesheet" type="text/css">
-  <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>
-</head>
+﻿<!DOCTYPE html>
+<html lang="en">
 
-<body>
+	<head>
+		<script type="text/javascript" src="/static/js/api.js"></script>
+  		<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css"
+    		rel="stylesheet" type="text/css">
+  		<script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>
+	  	<link rel="stylesheet" media="screen" href="static/css/home-style.css">
+	  	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	</head>
 
-  <div id="data_form_cont">
-    <form id="data_form">
-      x values:
-      <input id="data_x" type="text"
-             onfocus="if this.value=='e.g. 1,2,3,...,n' this.value = ''"
-             placeholder="e.g. 1,2,3,...,n"
-             required><br>
-      y values:
-      <input id="data_y" type="text"
-             onfocus="if this.value=='e.g. 1,2,4,...,n' this.value = ''"
-             placeholder="e.g. 1,2,3,...,n"
-             required><br>
-      <!--<input id="data_form_sub" type="button" value="submit data">-->
-      <select name="plotselect" onchange="changehelp();" defaultvalue="scatter">
-        <option value="scatter">scatter</option>
-        <option value="line">line</option>
-        <option value="annulus">annulus</option>
-        <option value="multi_line">multi line</option>
-        <option value="patch">patch</option>
-      </select>
-      <button type="submit">Submit Data</button>
-    </form>
-  </div>
-  <div id="plot-container"></div>
-
-  <script type="text/javascript">
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class='jumbotron'>
+			    <h2>Vizit - Kinda arbitrary data visualizations!</h2>
+			    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
+			    <p> Or you can login or register below.</p>
+			  	</div>
+			  	<div class="menubar">
+					{{ tag }}
+				</div>
+				
+			  </div>
+			  <div class="content">
+			  
+				  <div class='container' style="margin:auto">
+				  	<h2 style="text-align: center; font-size:26pt">Please enter a list of 
+					numerical values:</h2>
+					<div id="data_form_cont">
+					    <form id="data_form">
+					    <table class="PlotData">
+							<tr>
+								<td style="width: 80px"><label id="DataEntryLabel">X Values: </label></td>
+								<td><input id="data_x" type="text" style="width:100%"
+					             onfocus="if this.value=='e.g. 1,2,3,...,n' this.value = ''"
+					             placeholder="e.g. 1,2,3,...,n"
+					             required><br></td>
+							</tr>
+							<tr>
+								<td style="width: 80px"><label id="DataEntryLabel">Y Values: </label></td>
+								<td><input id="data_y" type="text" style="width:100%"
+					             onfocus="if this.value=='e.g. 1,2,4,...,n' this.value = ''"
+					             placeholder="e.g. 1,2,3,...,n"
+					             required><br></td>
+							</tr>
+							<tr>
+								<td style="width: 80px"><select name="plotselect" onchange="changehelp();" defaultvalue="scatter">
+							        <option value="scatter">scatter</option>
+							        <option value="line">line</option>
+							        <option value="annulus">annulus</option>
+							        <option value="multi_line">multi line</option>
+							        <option value="patch">patch</option>
+							      </select></td>
+								<td><button class = "submitButton" type="submit" style="margin-left:180px">Submit Data</button></td>
+							</tr>
+						</table>
+					    </form>
+					 </div>
+					  <div id="plot-container" style="width:60%; margin-top:20px; margin-left:auto; margin-right:auto"></div>					
+				  </div>
+			  </div>
+			  <div style="padding-bottom:40px" class='footer'>
+			  	<p style="text-align:center; color:white">Copyright 2016 - CoolGuys340</p>
+			  </div>
+		</div>
+	<script type="text/javascript">
     document.getElementById("data_form").addEventListener("submit", function (e) {
         e.preventDefault();
         sub_data();
     });
-
     var changehelp = function () {
         var selection = document.getElementsByName("plotselect")[0].value;
-
         var multihelp = "e.g. [1,2,...,n],[3,4,...,n],...,n";
         var singlehelp = "e.g. 1,2,3,...,n";
-
         if (["multi_line", "patch"].indexOf(selection) >= 0) {
             document.getElementById("data_x").placeholder = multihelp;
             document.getElementById("data_x").onchange = function () {
@@ -68,5 +95,5 @@
         }
     };
   </script>
-
-</body>
+	</body>
+</html>

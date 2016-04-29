@@ -13,7 +13,8 @@ body {
 
 .container {
 	width: 70%;
-	margin-left:50px;
+	margin-left:auto;
+	margin-right:auto;
 	padding-bottom:5%;
 	background-color:white;
 	height:auto;
@@ -130,6 +131,21 @@ label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-siz
     transition: all 0.3s ease;
 }
 
+.submitButton { background: #3D60A6;
+    width: 150px;
+    padding: 6px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin-left:20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+
 
 
 .infobox { margin-top:60px; margin-left:auto; margin-right:auto; width:60%; font-size:14pt; border:1pt black solid; background-color:aliceblue; }
@@ -197,6 +213,21 @@ table.register td {
     column-width:250px;
 }
 
+table.PlotData {
+	width:60%;
+	background-color:aliceblue;
+    margin-left:auto; 
+    margin-right:auto;	
+    border: 2px solid #3C3940;
+    padding:2%;
+
+}
+
+table.PlotData {
+    column-width:250px;
+}
+
+
 #allignRight { text-align:right; padding:5px; font-size:15pt; }
 
 
@@ -218,7 +249,7 @@ ul#menu li {
 ul#menu li a {
     background-color:#3D60A6;
     color: white;
-    margin-left:100px;
+    margin-right:100px;
     padding: 6px;
     cursor: pointer;
     border: 0px;

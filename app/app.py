@@ -226,13 +226,9 @@ def logout():
         if 'user' in session:
             session["authed"] = False
             session.pop('user', None)
-            return render_template('default.html',
-                                   menubar=status,
-                                   tag=mess)
+            return redirect ("/")
         else:
-            return render_template('default.html',
-                                   menubar=status,
-                                   tag=mess)
+            return redirect ("/")
 
     return None
 
@@ -266,7 +262,8 @@ def plot_data():
     """ We need to render the page and get the data
     from the user and then generate the appropriate html"""
     if 'user' in session:
-        return render_template('plot.html')
+        status = messages.returnLoggedInMenuBar()
+        return render_template('plot.html', tag=status)
     else:
         stats = messages.returnLoggedOutMenuBar()
         mess = messages.returnWelcome()
