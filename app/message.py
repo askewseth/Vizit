@@ -39,7 +39,7 @@ def returnLoggedOutMenuBar():
     return message
 
 def returnLoggedInMenuBar():
-    message = Markup('<div class="linksbar"><ul id="menu"><li><a href="/">Homepage</a><link><li><a href="/plot_data">Plots/Graphs</a><link><li><a href="/history">History</a><link>'
+    message = Markup('<div class="linksbar"><ul id="menu"><li style="margin-right:100px"><a href="/">Homepage</a><link><li style="margin-right:100px"><a href="/plot_data">Plots/Graphs</a><link><li style="margin-right:100px"><a href="/history">History</a><link>'
     + '<li><a href="/logout">Log Out</a><link></ul></div>')
     return message
 

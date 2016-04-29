@@ -32,7 +32,7 @@ body {
 }
 
 
-.menubar { padding-top:20px; padding-bottom:20px; width:100%; }
+.menubar { padding-top:20px; padding-bottom:20px; width:100%; background-color:#CCCCCC; height:40px; }
 
 .menubar form,
 .menubar for div {
@@ -80,18 +80,19 @@ body {
 
 .loginbar { float:right; margin-right: 15%; }
 
-label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-size:16pt}
+label.loginFormat { color:#3D60A6; padding-left:10px; padding-right:10px; font-size:16pt}
 
 .loginFields {
-	height:24px;
+	height:26px;
 	font-size:14pt;
 	width:150px;
+	color:#3D60A6;
 }
 
 
 .loginButton { background: #3D60A6;
     width: 100px;
-    padding: 6px;
+    padding: 4px;
     cursor: pointer;
     color: #fff;
     border: 0px;
@@ -102,10 +103,15 @@ label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-siz
     font-size: 17px;
     transition: all 0.3s ease;
 }
+}
+.loginButton:hover {
+    background: #4876D1;
+}
+
 
 .newAccountButton { background: #3D60A6;
     width: 140px;
-    padding: 6px;
+    padding: 4px;
     cursor: pointer;
     color: #fff;
     border: 0px;
@@ -116,6 +122,11 @@ label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-siz
     font-size: 17px;
     transition: all 0.3s ease;
 }
+}
+.newAccountButton:hover {
+    background: #4876D1;
+}
+
 
 .homepageButton { background: #3D60A6;
     width: 180px;
@@ -144,11 +155,14 @@ label.loginFormat { color:white; padding-left:10px; padding-right:10px; font-siz
     font-size: 17px;
     transition: all 0.3s ease;
 }
+.submitButton:hover {
+    background: #4876D1;
+}
 
 
 
 
-.infobox { margin-top:60px; margin-left:auto; margin-right:auto; width:60%; font-size:14pt; border:1pt black solid; background-color:aliceblue; }
+.infobox { margin-top:60px; margin-left:auto; margin-right:auto; width:60%; font-size:14pt; border:1pt black solid; background-color:#CCCCCC; }
 
 .form{
 	width: 400px;
@@ -201,7 +215,7 @@ table.center tr:nth-child(even) {
 
 table.register {
 	width:480px;
-	background-color:aliceblue;
+	background-color:#CCCCCC;
     margin-left:auto; 
     margin-right:auto;	
     border: 2px solid #3C3940;
@@ -215,7 +229,7 @@ table.register td {
 
 table.PlotData {
 	width:60%;
-	background-color:aliceblue;
+	background-color:#CCCCCC;
     margin-left:auto; 
     margin-right:auto;	
     border: 2px solid #3C3940;
@@ -249,7 +263,6 @@ ul#menu li {
 ul#menu li a {
     background-color:#3D60A6;
     color: white;
-    margin-right:100px;
     padding: 6px;
     cursor: pointer;
     border: 0px;
