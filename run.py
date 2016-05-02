@@ -138,14 +138,28 @@ def grid(dim='5,5'):
 @app.route('/<dim>/', methods=["GET", "POST"])
 def ngrid(dim='5,5'):
     try:
+        # change table size if button is clicked
         if request.method == "POST":
-            if request.form.get('submit', 'no') == "Change Table Size":
-                return redirect(url_for('ngrid', dim='3,3'))
+            if request.form.get('submit', None) == "Change Table Size":
+                rows = request.form['numrows']
+                cols = request.form['numcols']
+                if not rows:
+                    # if no input was given return same page
+                    if not cols:
+                        return redirect(url_for('ngrid'))
+                    rows = 5
+                if not cols:
+                    cols = 5
+                dims = str(rows) + "," + str(cols)
+                # return page with correct dimensions
+                return redirect(url_for('ngrid', dim=dims))
+        # get and save the original dimensions
         ans = map(int, dim.split(','))
         assert len(ans) == 2
         x, y = map(int, ans)
         orig = x, y
 
+        # if data is entered get that data
         if request.method == "POST":
             rows = []
             for ix in range(x):
@@ -157,26 +171,15 @@ def ngrid(dim='5,5'):
         else:
             rows = [[0]]
 
-        try:
-            rows = [map(float, r) for r in rows]
-        except Exception as e:
-            rows = [r for r in rows]
-
+        # make sure all of the entries are numerical
         rows = [filter(None, i) for i in rows]
         rows = [map(float, i) for i in rows]
         dfs = [pd.Series(i) for i in rows]
         print type(dfs)
         print type(dfs[0])
         print dfs[0].mean()
-        try:
-            averages = [x.mean() for x in dfs]
-            # averages = map(lambda x: x.mean(), dfs)
-        except Exception as e:
-            return render_template('error.html', error=e)
-        # averages = map(lambda x: x.mean().values[0], dfs)
-        # standarddevs = map(lambda x: x.std().values[0], dfs)
+        averages = [x.mean() for x in dfs]
         standarddevs = map(lambda x: x.std(), dfs)
-        # stderr = [float(x.std())/math.sqrt(x.count()) for x in dfs if x.count() != 0 else 0]
         stderr = []
         for x in dfs:
             if x.count() == 0:
@@ -184,15 +187,8 @@ def ngrid(dim='5,5'):
             else:
                 stderr.append(float(x.std())/math.sqrt(x.count()))
 
-        # stderr = map(lambda x: float(x.std())/math.sqrt(x.count()), dfs)
-        # standarderrors = map(lambda x: x.std()/float(math.sqrt(x.count()), dfs)
-        # solutions = reduce(zip, [averages, standarddevs, standarderrors])
-        # solutions = reduce(zip, [averages, standarddevs])
         solutions = zip(averages, standarddevs, stderr)
-        # except:
-            # solutions = [[]]
         x, y = orig
-        # rows = zip(solutions, rows)
         finalsolutions = zip(solutions, rows)
         return render_template('grid.html',
                                numcols=x,
