@@ -45,9 +45,44 @@
 
 
 
+  <!--
+  ██    ██ ██████  ██       ██████   █████  ██████       ██████ ███████ ██    ██
+  ██    ██ ██   ██ ██      ██    ██ ██   ██ ██   ██     ██      ██      ██    ██
+  ██    ██ ██████  ██      ██    ██ ███████ ██   ██     ██      ███████ ██    ██
+  ██    ██ ██      ██      ██    ██ ██   ██ ██   ██     ██           ██  ██  ██
+   ██████  ██      ███████  ██████  ██   ██ ██████       ██████ ███████   ████
+  -->
 
 
-<h3>Choose the dimensions of your dataset</h3>
+  <h3> UPLOAD A CSV FILE </h3>
+
+
+  <form id="upload-form" action="{{ url_for('uploaded') }}" method="post" enctype="multipart/form-data">
+    <table>
+      <tr>
+        <td>
+          <input type="file" name="file" accept=".csv" multiple>
+        </td>
+        <td>
+          <input type="submit" value="send">
+        </td>
+      </tr>
+    </table>
+  </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!--
 ███████ ██ ███████ ██ ███    ██  ██████
@@ -57,7 +92,10 @@
 ███████ ██ ███████ ██ ██   ████  ██████
 -->
 
-<form class="form-group" method="POST">
+
+<!-- <h3>Choose the dimensions of your dataset</h3> -->
+
+<!-- <form class="form-group" method="POST">
   <table>
     <tr>
       <td>
@@ -77,12 +115,33 @@
     </tr>
     <tr>
       <td>
-        <!-- <button type="submit" class="btn btn-default" value="changelayout"> -->
-          <!-- Submit -->
           <form action="{{ url_for('grid', dims="2,2") }}" method="post">
             <input type="submit" name="submit" value="Change Table Size">
           </form>
-        <!-- </button> -->
+      </td>
+    </tr>
+  </table>
+</form> -->
+
+<form class="form-group" method="POST">
+  <table>
+    <tr>
+      <td>
+        Change Table Dimensions:
+      </td>
+      <td>
+        <input type="number" name="numrows">
+      </td>
+      <td>
+        x
+      </td>
+      <td>
+        <input type="number" name="numcols">
+      </td>
+      <td>
+          <form action="{{ url_for('grid', dims="2,2") }}" method="post">
+            <input type="submit" name="submit" value="Change Table Size">
+          </form>
       </td>
     </tr>
   </table>
@@ -92,24 +151,25 @@
 <!--<a href="url_for('report', data=[[1]])">send data</a>-->
 
 
-<h3> UPLOAD A CSV FILE </h3>
 
 
-<form id="upload-form" action="{{ url_for('uploaded') }}" method="post" enctype="multipart/form-data">
+
+<form method="POST">
+
   <table>
     <tr>
       <td>
-        <input type="file" name="file" accept=".csv" multiple>
+        <h3> Data Input </h3>
       </td>
+    </tr>
+    <tr>
       <td>
-        <input type="submit" value="send">
+        <input type="text" id="dataname" name="dataname" placeholder="Name your dataset">
       </td>
     </tr>
   </table>
+
 </form>
-
-<h3> Data Input </h3>
-
 
 
 <!--
@@ -229,50 +289,54 @@
 
 
 
-<div class="container-fluid col-md-8">
-  <h3> Data Results</h3>
-  <form class="form-group" role="search" method="POST">
-    <table class="table" align="left">
-      <tr>
-        <td align="center">
-          <strong>
-            Average
-          </strong>
-        </td>
-        <td align="center">
-          <strong>
-            Standard Deviation
-          </strong>
-        </td>
-        <td align="center">
-          <strong>
-            Standard Error
-          </strong>
-        </td>
-      </tr>
-      {% for i, r in finalsolutions %}
-      <tr>
-        <td align="center">
-          {{ i[0] }}
-        </td>
-        <td align="center">
-          {{ i[1] }}
-        </td>
-        <td align="center">
-          {{ i[2] }}
-        </td>
-        {% for col in r %}
-        <td align="center">
-            {{ col }}
-        </td>
+{% if post %}
+
+  <div class="container-fluid">
+    <h3> Data Results</h3>
+    <form class="form-group" role="search" method="POST">
+      <table class="table" align="left">
+        <tr>
+          <td align="center">
+            <strong>
+              Average
+            </strong>
+          </td>
+          <td align="center">
+            <strong>
+              Standard Deviation
+            </strong>
+          </td>
+          <td align="center">
+            <strong>
+              Standard Error
+            </strong>
+          </td>
+        </tr>
+        {% for i, r in finalsolutions %}
+        <tr>
+          <td align="center">
+            {{ i[0] }}
+          </td>
+          <td align="center">
+            {{ i[1] }}
+          </td>
+          <td align="center">
+            {{ i[2] }}
+          </td>
+          {% for col in r %}
+          <td align="center">
+              {{ col }}
+          </td>
+          {% endfor %}
+        </tr>
         {% endfor %}
-      </tr>
-      {% endfor %}
 
-    </table>
+      </table>
 
-</form>
-</div>
+  </form>
+  </div>
+
+{% endif %}
 
 
 </body>

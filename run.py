@@ -52,11 +52,12 @@ def uploaded():
 
         avgs, stds, sters = [], [], []
         for row in rows:
+            row = filter(None, row)
             row = map(float, row)
-            df = pd.DataFrame(row)
-            avgs.append(float(df.mean().values[0]))
-            stds.append(float(df.std().values[0]))
-            sters.append(float(df.std().values[0]/math.sqrt(len(df))))
+            df = pd.Series(row)
+            avgs.append(float(df.mean()))
+            stds.append(float(df.std()))
+            sters.append(float(df.std()/math.sqrt(len(df))))
         data = zip(range(1, len(avgs)+1), avgs, stds, sters)
 
         return render_template("complete.html",
@@ -96,12 +97,14 @@ def grid(dim='5,5'):
                     index = str(ix) + ',' + str(iy)
                     cols.append(request.form[index])
                 rows.append(cols)
+
+
         else:
             rows = [[0]]
         newrows = map(lambda x: ",".join(x), map(str, rows))
         banner = "\n".join(map(str, newrows))
-        #
-        # # Displaying the results
+
+        # Displaying the results
         if request.method == 'POST':
             extra = True
             nrows = [filter(None, i) for i in rows]
@@ -115,7 +118,7 @@ def grid(dim='5,5'):
         rows = [["hello"], ["goodbye"]]
 
         try:
-            dfs = [pd.DataFrame(i) for i in rows]
+            dfs = [pd.Series(i) for i in rows]
             averages = map(lambda x: x.mean(), dfs)
             standarddevs = map(lambda x: x.std(), dfs)
             solutions = reduce(zip, [averages, standarddevs])
@@ -168,6 +171,11 @@ def ngrid(dim='5,5'):
                     index = str(ix) + ',' + str(iy)
                     cols.append(request.form[index])
                 rows.append(cols)
+
+            # Save the entered data to a csv file
+            csvname = request.form.get('dataname', "testname")
+            print "CSV NAME: ", csvname
+            saveCSV(rows, name=csvname)
         else:
             rows = [[0]]
 
@@ -190,11 +198,16 @@ def ngrid(dim='5,5'):
         solutions = zip(averages, standarddevs, stderr)
         x, y = orig
         finalsolutions = zip(solutions, rows)
+        if request.method == 'POST':
+            post = True
+        else:
+            post = False
         return render_template('grid.html',
                                numcols=x,
                                numrows=y,
                                rows=rows,
-                               finalsolutions=finalsolutions
+                               finalsolutions=finalsolutions,
+                               post=post
                                )
     except Exception as e:
         return render_template('error.html', error=e)
@@ -274,6 +287,49 @@ def plot():
     return response
 
 
+
+
+def saveCSV(data, name=None):
+    # get name for file if one not given
+    if name is None:
+        name = getRandomName()
+
+    # make sure diretory exists
+    target = os.path.join(APP_ROOT, "entered/")
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    # make sure name given has extinsion
+    if not name.endswith(".csv"):
+        name = name + ".csv"
+
+    # tack path on name to avoid changing paths
+    fullname = "entered/" + name
+
+    # filter out any blank entries
+    data = map(lambda x: filter(None, x), data)
+    data = filter(None, data)
+
+    # save the remaining data to the given filename
+    with open(fullname, "wb") as f:
+        print 'OPENING FILE'
+        writer = csv.writer(f, delimiter=",")
+        writer.writerows(data)
+
+    return name
+
+def getRandomName():
+    target = os.path.join(APP_ROOT, "entered/")
+    files = os.listdir(target)
+    current_names = map(lambda x: x.split('.')[0], files)
+
+    def rname():
+        return str(random.randrange(10**6)) + ".csv"
+
+    name = rname()
+    while name in current_names:
+        name = rname()
+    return name
 
 if __name__ == '__main__':
     app.run(debug=False)
