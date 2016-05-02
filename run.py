@@ -173,8 +173,9 @@ def ngrid(dim='5,5'):
                 rows.append(cols)
 
             # Save the entered data to a csv file
-            csvname = request.form.get('dataname', "testname")
+            csvname = request.form.get('dataname', 'OTHERNAME')
             print "CSV NAME: ", csvname
+            print request.form.get('dname', "DIDN'T WORK")
             saveCSV(rows, name=csvname)
         else:
             rows = [[0]]
