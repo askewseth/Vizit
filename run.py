@@ -1,4 +1,4 @@
-"Plot a PNG using matplotlib in a web request, using Flask."
+"""Plot a PNG using matplotlib in a web request, using Flask."""
 import random
 import StringIO
 import os
@@ -138,10 +138,9 @@ def grid(dim='5,5'):
 @app.route('/<dim>/', methods=["GET", "POST"])
 def ngrid(dim='5,5'):
     try:
-        # if request.method == "POST":
-        #     if request.form.get('submit', 'no') == 'results':
-        #         # return redirect(url_for('plot')
-        #         return redirect("www.tsethaskew.me")
+        if request.method == "POST":
+            if request.form.get('submit', 'no') == "Change Table Size":
+                return redirect(url_for('ngrid', dim='3,3'))
         ans = map(int, dim.split(','))
         assert len(ans) == 2
         x, y = map(int, ans)
