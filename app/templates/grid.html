@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
-	<head>		
+	<head>
 		<link rel="stylesheet" media="screen" href = "/static/js/bootstrap.js">
 		<link rel="stylesheet" media="screen" href="/static/css/home-style.css">
 		<meta name="viewport" content = "width=device-width, initial-scale=1.0">
@@ -18,14 +18,14 @@
 			  	<div class="menubar">
 					{{ menubar }}
 				</div>
-				
+
 			  </div>
 			  <div class="content">
 				  <div class='container' style="margin:auto">
 				  	<h1 style="text-align:center">Data Input</h1>
 						<div class="container-fluid col-md-8">
 						  <form method="POST">
-						
+
 						  <table class="table" style="padding: 0; border-collapse: collapse;text-align:center">
 						    <tr>
 						      <td style="text-align:right">
@@ -57,7 +57,7 @@
 						  </button>
 						</form>
 						</div>
-						
+
 						<div class="container-fluid col-md-8">
 						  <h3> Data Results</h3>
 						  <form class="form-group" role="search" method="POST">
@@ -88,7 +88,7 @@
 						          {{ i[1] }}
 						        </td>
 						        <td style="text-align:center">
-						          error
+											{{ i[2] }}
 						        </td>
 						        {% for col in r %}
 						        <td style="text-align:center">
@@ -97,13 +97,13 @@
 						        {% endfor %}
 						      </tr>
 						      {% endfor %}
-						
+
 						    </table>
-						
+
 						</form>
 						</div>
-				  	
-			
+
+
 				  </div>
 			  </div>
 			  <div style="padding-bottom:40px" class='footer'>
