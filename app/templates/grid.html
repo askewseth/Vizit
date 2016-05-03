@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+	<head>		
+		<link rel="stylesheet" media="screen" href = "/static/js/bootstrap.js">
+		<link rel="stylesheet" media="screen" href="/static/css/home-style.css">
+		<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class='jumbotron'>
+			    <h2>Vizit - Kinda arbitrary data visualizations!</h2>
+			    <a id="viz_button" href="plot_data" class="button" >Get Started Vizualizing!</a>
+			    <p> Or you can login or register below.</p>
+			  	</div>
+			  	<div class="menubar">
+					{{ menubar }}
+				</div>
+				
+			  </div>
+			  <div class="content">
+				  <div class='container' style="margin:auto">
+				  	<h1 style="text-align:center">Data Input</h1>
+						<div class="container-fluid col-md-8">
+						  <form method="POST">
+						
+						  <table class="table" style="padding: 0; border-collapse: collapse;text-align:center">
+						    <tr>
+						      <td style="text-align:right">
+						        #
+						      </td>
+						      {% for x in range(numcols) %}
+						        <td style="text-align:right">
+						          <strong>   Trial {{ x +1 }} </strong>
+						        </td>
+						      {% endfor %}
+						    </tr>
+						    {% for x in range(numrows) %}
+						    <tr>
+						      <td style="text-align:right">
+						        {{ x + 1 }}
+						      </td>
+						      {% for y in range(numcols) %}
+						      <td style="text-align:center">
+						        <div class="col-md-8">
+						          <input type="text" class="form-control" placeholder="{{x+1}},{{y+1}}" name="{{x}},{{y}}">
+						        </div>
+						      </td>
+						      {% endfor %}
+						    </tr>
+						    {% endfor %}
+						  </table>
+						  <button type="submit" class="btn btn-default">
+						    Submit
+						  </button>
+						</form>
+						</div>
+						
+						<div class="container-fluid col-md-8">
+						  <h3> Data Results</h3>
+						  <form class="form-group" role="search" method="POST">
+						    <table class="table">
+						      <tr>
+						        <td style="text-align:center">
+						          <strong>
+						            Average
+						          </strong>
+						        </td>
+						        <td style="text-align:center">
+						          <strong>
+						            Standard Deviation
+						          </strong>
+						        </td>
+						        <td style="text-align:center">
+						          <strong>
+						            Standard Error
+						          </strong>
+						        </td>
+						      </tr>
+						      {% for i, r in finalsolutions %}
+						      <tr>
+						        <td style="text-align:center">
+						          {{ i[0] }}
+						        </td>
+						        <td style="text-align:center">
+						          {{ i[1] }}
+						        </td>
+						        <td style="text-align:center">
+						          error
+						        </td>
+						        {% for col in r %}
+						        <td style="text-align:center">
+						            {{ col }}
+						        </td>
+						        {% endfor %}
+						      </tr>
+						      {% endfor %}
+						
+						    </table>
+						
+						</form>
+						</div>
+				  	
+			
+				  </div>
+			  </div>
+			  <div style="padding-bottom:40px" class='footer'>
+			  	<p style="text-align:center; color:white">Copyright 2016 - CoolGuys340</p>
+			  </div>
+		</div>
+	</body>
+</html>
