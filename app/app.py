@@ -10,8 +10,8 @@ from flask import Flask, make_response, render_template, request, redirect, url_
 from werkzeug.datastructures import CallbackDict
 from flask.sessions import SessionInterface, SessionMixin
 from itsdangerous import URLSafeTimedSerializer, BadSignature
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
+#from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+#from matplotlib.figure import Figure
 from plotter import Plotter
 import message as messages
 
@@ -264,10 +264,9 @@ def plot_data():
     """ We need to render the page and get the data
     from the user and then generate the appropriate html"""
     return render_template('plot.html')
-
+"""
 @app.route('/plot.png')
 def plot_img():
-    """Display plot of random numbers, just proof of concept."""
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
 
@@ -281,7 +280,7 @@ def plot_img():
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
     return response
-
+"""
 
 if __name__ == '__main__':
     # Create a random session key
