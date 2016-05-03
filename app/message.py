@@ -1,4 +1,4 @@
-#Module to hold special messages to be displayed throughout the site.
+# Module to hold special messages to be displayed throughout the site.
 # The purpose is to have easy access when new messages are to be added
 # and when old messages are to be edited.  This also prevents from having
 # to create a separate html template for each page when sometimes different
@@ -33,13 +33,14 @@ def returnDisclaimer():
 
 def returnLoggedOutMenuBar():
     message = Markup('<div class=\"loginbar\"><form action=\"/login\" method="post"><span><label class=\"loginFormat\">Enter Email:</label>'
-    + '<input class=\"loginFields\" type=\"text\" name=\"email\"><label class=\"loginFormat\">Password:</label><input class=\"loginFields\" type=\"password\" name=\"password\">'
-    + '<button class=\"loginButton\" type=\"submit\">LOGIN</button></span></form><form action=\"/register\" method=\"get\">'
+    + '<input class=\"loginFields\" type=\"text\" id=\"email\" name=\"email\"><label class=\"loginFormat\">Password:</label><input class=\"loginFields\" type=\"password\" id=\"pass\" name=\"password\">'
+    + '<button class=\"loginButton\" type=\"submit\" onclick=\"return check()\">Login</button></span></form><form action=\"/register\" method=\"get\">'
     + '<button class=\"newAccountButton\" type=\"submit\">Create Account</button></form></div>')
     return message
 
 def returnLoggedInMenuBar():
-    message = Markup('<div class="linksbar"><ul id="menu"><li style="margin-right:100px"><a href="/">Homepage</a><link><li style="margin-right:100px"><a href="/plot_data">Plots/Graphs</a><link><li style="margin-right:100px"><a href="/history">History</a><link>'
+    message = Markup('<div class="linksbar"><ul id="menu"><li style="margin-right:40px"><a href="/">Homepage</a><link><li style="margin-right:40px"><a href="/plot_data">Plots/Graphs</a><link>'
+    + '<li style="margin-right:40px"><a href="/ngrid">Grid Query</a><link><li style="margin-right:40px"><a href="/upload">Process CSV</a><link><li style="margin-right:40px"><a href="/history">History</a><link>'
     + '<li><a href="/logout">Log Out</a><link></ul></div>')
     return message
 
@@ -59,4 +60,9 @@ def returnWelcomeLoggedIn():
     message = Markup('<p style=\"padding-left:30px; padding-right:30px\">Welcome back to the Vizit statistical web site.  We hope you enjoy your stay.  The purpose of this site is to '
     + 'provide users a quick reference to statistical data calculated '
     + 'from a set of numbers.  Enter any given comma separated values into the text box above to give it a try or click one of the bottons at the top for more options.')
+    return message
+
+def returnCSVInstructions():
+    message = Markup('<p style="padding-left:30px; padding-right:30px">This section will allow you to upload a .csv file for processing.  The file must contain '
+    + 'only numbers.  Any text headers will result in an error.  Click the browse button above and locate file.</p>')
     return message

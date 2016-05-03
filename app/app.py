@@ -3,6 +3,8 @@ import random
 import os
 import StringIO
 import flask
+import csv
+import math
 
 from flask import Flask, make_response, render_template, request, redirect, url_for, session
 from flask_restful import Resource, Api, reqparse
@@ -26,10 +28,12 @@ CONTEXT.use_certificate_file('./static/keys/server.crt')
 import sys
 sys.path.insert(0, "/home/extra/Desktop/tsite/scripts/")
 import script as sc
+import pandas as pd
 import database as db
 
 
 app = Flask(__name__)
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Session stuff http://flask.pocoo.org/snippets/51/
 class ItsdangerousSession(CallbackDict, SessionMixin):
@@ -91,6 +95,142 @@ API Methods:
         Generates a plot based on the data passed in from the data form in the request.
         the plot is returned as html to the client? (not sure if flask will like that)
 """
+@app.route("/upload/")
+def upload():
+    if 'user' in session:
+        mess = messages.returnCSVInstructions()
+        status = messages.returnLoggedInMenuBar()
+        return render_template("upload.html",
+                               menubar=status,
+                               tag=mess)
+        
+    else:
+        return redirect ("/")
+
+@app.route("/uploaded/", methods=["POST"])
+def uploaded():
+    """Upload csv file."""
+    if 'user' in session:
+        status = messages.returnLoggedInMenuBar()
+        # Get the target path
+        target = os.path.join(APP_ROOT, "uploads/")
+        print target
+
+        # Make sure Directory exists
+        if not os.path.isdir(target):
+            os.mkdir(target)
+
+        # Save file(s)
+        for f in request.files.getlist("file"):
+            print f
+            filename = f.filename
+            destination = "/".join([target, filename])
+            print destination
+            f.save(destination)
+
+        # Display CSV file contents
+        try:
+            with open(destination, 'r+') as f:
+                reader = csv.reader(f)
+                rows = [row for row in reader]
+                assert type(rows[0]) == list, "ROW ELEMENT'S WEREN'T LISTS"
+
+            avgs, stds, sters = [], [], []
+            for row in rows:
+                row = map(float, row)
+                df = pd.DataFrame(row)
+                avgs.append(float(df.mean().values[0]))
+                stds.append(float(df.std().values[0]))
+                sters.append(float(df.std().values[0]/math.sqrt(len(df))))
+
+            data = zip(range(1, len(avgs)+1), avgs, stds, sters)
+            return render_template("complete.html",
+                               menubar=status,
+                               rows=rows,
+                               data=data
+                               )
+        except Exception as e:
+            return render_template('error.html', error=e)
+        
+    else:
+        return redirect ("/")
+    
+
+
+@app.route('/ngrid/', methods=["GET", "POST"])
+@app.route('/ngrid/<dim>/', methods=["GET", "POST"])
+def grid(dim='5,5'):
+    status = messages.returnLoggedInMenuBar()
+    try:
+        try:
+            if request.method == "POST":
+                if request.form.get('submit', 'no') == 'results':
+                    return redirect(url_for('report', data=[[5]]))
+            ans = map(int, dim.split(','))
+            assert len(ans) == 2
+            x, y = ans
+            orig = x, y
+            if request.method == "POST":
+                banner = request.form["0,0"]
+            else:
+                banner = "test banner"
+
+        except Exception as e:
+            return render_template('error.html', error=e)
+
+        if request.method == "POST":
+            rows = []
+            for ix in range(x):
+                cols = []
+                for iy in range(y):
+                    index = str(ix) + ',' + str(iy)
+                    cols.append(request.form[index])
+                rows.append(cols)
+        else:
+            rows = [[0]]
+        newrows = map(lambda x: ",".join(x), map(str, rows))
+        banner = "\n".join(map(str, newrows))
+        #
+        # # Displaying the results
+        if request.method == 'POST':
+            extra = True
+            nrows = [filter(None, i) for i in rows]
+            dfs = map(lambda x: pd.Series(x), nrows)
+            averages = map(lambda x: x.mean(), dfs)
+            stddev = map(lambda x: x.std(), dfs)
+            averages, stddev = "", ""
+        else:
+            extra, averages, stddev = False, None, None
+            extra = False
+        rows = [["hello"], ["goodbye"]]
+
+        try:
+            dfs = [pd.DataFrame(i) for i in rows]
+            averages = map(lambda x: x.mean(), dfs)
+            standarddevs = map(lambda x: x.std(), dfs)
+            solutions = reduce(zip, [averages, standarddevs])
+        except:
+            solutions = [[]]
+        x, y = orig
+        return render_template('grid.html',
+                               menubar=status,
+                               numrows=x,
+                               numcols=y,
+                               banner=banner,
+                               rows=rows,
+                               extra=extra,
+                               averages=averages,
+                               stddev=stddev
+                               )
+    except Exception as e:
+        return render_template('error.html',error=e)
+@app.route('/report/', methods=["GET", "POST"])
+def report(data):
+    return render_template('data.html', data=data)
+
+@app.route('/try/', methods=["GET", "POST"])
+def trydata():
+    return redirect(url_for('report', data=[[1,2,3],[2,3,4]]))
 
 @app.route('/apiv1/plot', methods=["GET", "POST", "PUT"])
 def api_plot():
@@ -183,6 +323,75 @@ def home():
 
     return render_template('default.html', menubar=status, tag=mess)
 
+@app.route('/<dim>/', methods=["GET", "POST"])
+def ngrid(dim='5,5'):
+    try:
+        # if request.method == "POST":
+        #     if request.form.get('submit', 'no') == 'results':
+        #         # return redirect(url_for('plot')
+        #         return redirect("www.tsethaskew.me")
+        ans = map(int, dim.split(','))
+        assert len(ans) == 2
+        x, y = map(int, ans)
+        orig = x, y
+
+        if request.method == "POST":
+            rows = []
+            for ix in range(x):
+                cols = []
+                for iy in range(y):
+                    index = str(ix) + ',' + str(iy)
+                    cols.append(request.form[index])
+                rows.append(cols)
+        else:
+            rows = [[0]]
+
+        try:
+            rows = [map(float, r) for r in rows]
+        except Exception as e:
+            rows = [r for r in rows]
+
+        rows = [filter(None, i) for i in rows]
+        rows = [map(float, i) for i in rows]
+        dfs = [pd.Series(i) for i in rows]
+        print type(dfs)
+        print type(dfs[0])
+        print dfs[0].mean()
+        try:
+            averages = [x.mean() for x in dfs]
+            # averages = map(lambda x: x.mean(), dfs)
+        except Exception as e:
+            return render_template('error.html', error=e)
+        # averages = map(lambda x: x.mean().values[0], dfs)
+        # standarddevs = map(lambda x: x.std().values[0], dfs)
+        standarddevs = map(lambda x: x.std(), dfs)
+        # stderr = [float(x.std())/math.sqrt(x.count()) for x in dfs if x.count() != 0 else 0]
+        stderr = []
+        for x in dfs:
+            if x.count() == 0:
+                stderr.append(0)
+            else:
+                stderr.append(float(x.std())/math.sqrt(x.count()))
+
+        # stderr = map(lambda x: float(x.std())/math.sqrt(x.count()), dfs)
+        # standarderrors = map(lambda x: x.std()/float(math.sqrt(x.count()), dfs)
+        # solutions = reduce(zip, [averages, standarddevs, standarderrors])
+        # solutions = reduce(zip, [averages, standarddevs])
+        solutions = zip(averages, standarddevs, stderr)
+        # except:
+            # solutions = [[]]
+        x, y = orig
+        # rows = zip(solutions, rows)
+        finalsolutions = zip(solutions, rows)
+        return render_template('grid.html',
+                               numcols=x,
+                               numrows=y,
+                               rows=rows,
+                               finalsolutions=finalsolutions
+                               )
+    except Exception as e:
+        return render_template('error.html', error=e)
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Login in page
@@ -205,8 +414,7 @@ def login():
         if db.login(email,password):
             session["authed"] = True
             session["user"] = email
-            status = messages.returnLoggedInMenuBar()
-            mess = messages.returnWelcomeLoggedIn()
+            return redirect("/")
         else:
             session["authed"] = False
             status = messages.returnLoggedOutMenuBar()
