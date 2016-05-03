@@ -1,3 +1,5 @@
+import re #regex module
+
 from bokeh.plotting import figure, output_file, show
 from bokeh.embed import components
 
@@ -60,7 +62,6 @@ class Plotter:
         if t in ["multi_line", "patch"]:
             # parse the data differently
             # expect list of lists
-            print data
             d = [data['x'], data['y']]
             return d
         else:
@@ -68,13 +69,17 @@ class Plotter:
             xdata = data['x']
             ydata = data['y']
 
+             # Sanitize
+            xdata_clean = self.sanitize_data(xdata)
+            ydata_clean = self.sanitize_data(ydata)
+
             # process the data
-            xdata_split = xdata.split(',')
-            ydata_split = ydata.split(',')
+            xdata_split = xdata_clean.split(',')
+            ydata_split = ydata_clean.split(',')
             xdata_float = []
             ydata_float = []
 
-            #parse the data into ints
+            #parse the data into floats
             for n in xdata_split:
                 xdata_float.append(float(n))
 
@@ -82,6 +87,24 @@ class Plotter:
                 ydata_float.append(float(n))
 
             return [xdata_float, ydata_float]
+
+    # Scrub the data of anything that isn't a float or dec
+    # Only allow certain characters
+    # Data - list of data points ideally comma separated
+    def sanitize_data(self, data):
+        # iterate through data string
+        # ^[-+]?([0-9]+\.?[0-9]*|[0-9]*\.?[0-9]+)$
+        # Tokenize the data string
+        str_split = data.split(',')
+        clean_str = ""
+
+        for s in str_split:
+            if re.search(r'^[-+]?([0-9]+\.?[0-9]*|[0-9]*\.?[0-9]+)$', s) != None:
+                # It's allowed
+                clean_str = clean_str + s + ','
+            # no else needed, simply don't use the unmatched strings
+        clean_str = clean_str[:clean_str.rfind(',')]
+        return clean_str
 
     def getscript(self):
         return self.script

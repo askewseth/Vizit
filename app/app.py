@@ -111,7 +111,6 @@ def api_plot():
         # probably need to format the data
         # parse it out into a dict
         data = request.json["data"]
-        print type(data)
         #process the data
 
         p.plot(data, plot_type)
@@ -138,7 +137,7 @@ def stats():
             status = messages.returnLoggedInMenuBar()
         else:
             status = messages.returnLoggedOutMenuBar()
-        
+
     else:
         val = 'INPUT'
         # Get Values from HTML
@@ -176,7 +175,7 @@ def home():
     if 'user' in session:
         status = messages.returnLoggedInMenuBar()
         mess = messages.returnWelcomeLoggedIn()
-        
+
     else:
         status = messages.returnLoggedOutMenuBar()
         mess = messages.returnWelcome()
@@ -253,7 +252,7 @@ def register():
             status = messages.returnLoggedOutMenuBar
             mess = messages.returnNewAccountFailure()
             return render_template("register.html", menubar=status, tag=mess)
-        
+
     elif request.method == "PUT":
         # Create an account
         pass
