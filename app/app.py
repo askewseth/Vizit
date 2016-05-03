@@ -5,8 +5,8 @@ import StringIO
 import flask
 
 from flask import Flask, make_response, render_template, request, redirect, url_for, session
-from flask_restful import Resource, Api, reqparse
-from flask.views import MethodView
+#from flask_restful import Resource, Api, reqparse
+#from flask.views import MethodView
 from werkzeug.datastructures import CallbackDict
 from flask.sessions import SessionInterface, SessionMixin
 from itsdangerous import URLSafeTimedSerializer, BadSignature
