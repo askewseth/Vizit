@@ -95,6 +95,69 @@ API Methods:
         the plot is returned as html to the client? (not sure if flask will like that)
 """
 
+@app.route("/upload/")
+def upload():
+    if 'user' in session:
+        mess = messages.returnCSVInstructions()
+        status = messages.returnLoggedInMenuBar()
+        return render_template("upload.html",
+                               menubar=status,
+                               tag=mess)
+
+    else:
+        return redirect ("/")
+
+@app.route("/uploaded/", methods=["POST"])
+def uploaded():
+    """Upload csv file."""
+    if 'user' in session:
+        status = messages.returnLoggedInMenuBar()
+        # Get the target path
+        target = os.path.join(APP_ROOT, "uploads/")
+        print target
+
+        # Make sure Directory exists
+        if not os.path.isdir(target):
+            os.mkdir(target)
+
+        # Save file(s)
+        for f in request.files.getlist("file"):
+            print f
+            filename = f.filename
+            destination = "/".join([target, filename])
+            print destination
+            f.save(destination)
+
+        # Display CSV file contents
+        try:
+            with open(destination, 'r+') as f:
+                reader = csv.reader(f)
+                rows = [row for row in reader]
+                assert type(rows[0]) == list, "ROW ELEMENT'S WEREN'T LISTS"
+
+            avgs, stds, sters = [], [], []
+            for row in rows:
+                row = map(float, row)
+                df = pd.DataFrame(row)
+                avgs.append(float(df.mean().values[0]))
+                stds.append(float(df.std().values[0]))
+                sters.append(float(df.std().values[0]/math.sqrt(len(df))))
+
+            data = zip(range(1, len(avgs)+1), avgs, stds, sters)
+            return render_template("complete.html",
+                               menubar=status,
+                               rows=rows,
+                               data=data
+                               )
+        except Exception as e:
+            return render_template('error.html', error=e)
+
+    else:
+        return redirect ("/")
+
+
+
+
 
 def saveCSV(data, name=None):
     """Save a grid layout as a .csv file in the static/entered directory."""
@@ -146,6 +209,7 @@ def getRandomName():
 @app.route('/ngrid/<dim>/', methods=["GET", "POST"])
 def grid(dim='5,5'):
     try:
+        mess = messages.returnLoggedInMenuBar()
         # change table size if button is clicked
         if request.method == "POST":
             if request.form.get('submit', None) == "Change Table Size":
@@ -209,6 +273,7 @@ def grid(dim='5,5'):
         else:
             post = False
         return render_template('grid.html',
+                               menubar=mess,
                                numcols=x,
                                numrows=y,
                                rows=rows,
@@ -387,7 +452,7 @@ def home():
 #     except Exception as e:
 #         return render_template('error.html', error=e)
 
-@app.route('/login/', methods=["GET", "POST"])
+@app.route('/login', methods=["GET", "POST"])
 def login():
     """Login in page
     handle server side logic here
@@ -414,8 +479,8 @@ def login():
             session["authed"] = False
             status = messages.returnLoggedOutMenuBar()
             mess = messages.returnLoginError()
-
     return render_template('default.html', menubar=status, tag=mess)
+    # return redirect('/')
 
 @app.route('/logout/', methods=["GET"])
 def logout():
