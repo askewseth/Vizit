@@ -51,3 +51,16 @@ def addUser(mail, pass_wd):
         return True
     else:
         return False
+
+def addBasicQueryHistory(mail, query_data):
+    now = datetime.now()
+    for instance in session.query(User).filter_by(email=mail):
+        users_id = instance.id
+        email = instance.email
+
+    current_time = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' -- ' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
+    new_query = Query(query=query_data, timestamp=datetime.now(), user_id=users_id)
+    session.add(new_query)
+    session.commit()
+    
+    print(users_id, email, query_data, current_time)
