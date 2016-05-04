@@ -52,15 +52,73 @@ def addUser(mail, pass_wd):
     else:
         return False
 
+def returnUserIDByEmail(mail):
+    for instance in session.query(User).filter_by(email=mail):
+        return instance.id
+
 def addBasicQueryHistory(mail, query_data):
-    now = datetime.now()
     for instance in session.query(User).filter_by(email=mail):
         users_id = instance.id
         email = instance.email
 
-    current_time = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' -- ' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
-    new_query = Query(query=query_data, timestamp=datetime.now(), user_id=users_id)
+    insert_string = '1[{' + query_data + '}]'
+    new_query = Query(query=insert_string, timestamp=datetime.now(), user_id=users_id)
     session.add(new_query)
     session.commit()
-    
-    print(users_id, email, query_data, current_time)
+
+def addPlotHistory(mail, query_data1, query_data2):
+    for instance in session.query(User).filter_by(email=mail):
+        users_id = instance.id
+        email = instance.email
+
+    insert_string = '2[{' + query_data1 + '}{' + query_data2 + '}]'
+    new_query = Query(query=insert_string, timestamp=datetime.now(), user_id=users_id)
+    session.add(new_query)
+    session.commit()
+
+def addGridHistory(mail, file_path):
+    for instance in session.query(User).filter_by(email=mail):
+        users_id = instance.id
+        email = instance.email
+
+    insert_string = '3[{' + file_path + '}]'
+    new_query = Query(query=insert_string, timestamp=datetime.now(), user_id=users_id)
+    session.add(new_query)
+    session.commit()
+
+def addCSVHistory(mail, file_path):
+    for instance in session.query(User).filter_by(email=mail):
+        users_id = instance.id
+        email = instance.email
+
+    insert_string = '4[{' + file_path + '}]'
+    new_query = Query(query=insert_string, timestamp=datetime.now(), user_id=users_id)
+    session.add(new_query)
+    session.commit()
+
+def returnAllHistory(mail):
+    users_id = returnUserIDByEmail(mail)
+    matrix = []
+    count = 0
+    for instance in session.query(Query).filter_by(user_id=users_id):
+        if instance.query[:1] == '1':
+            query_type = 'Basic Statistical Query'
+        elif instance.query[:1] == '2':
+            query_type = 'Plot Statistical Query'
+        elif instance.query[:1] == '3':
+            query_type = 'Grid Statistical Query'
+        elif instance.query[:1] == '4':
+            query_type = 'CSV Upload Statistical Query'
+        else:
+            query_type = 'Unknown Statistical Query'
+
+        time = instance.timestamp
+        query_time = str(time.month) + '/' + str(time.day) + '/' + str(time.year) + ' -- ' + str(time.hour) + ':' + str(time.minute) + ':' + str(time.second)
+        matrix.append([])
+        matrix[count].append(query_time)
+        matrix[count].append(query_type)
+        matrix[count].append(str(time.month) + ':' + str(time.day) + ':' + str(time.year) + ':' + str(time.hour) + ':' + str(time.minute) + ':' + str(time.second))
+        matrix[count].append(instance.query)
+        count = count + 1
+
+    return matrix

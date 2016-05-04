@@ -9,6 +9,7 @@ import math
 from flask import Flask, make_response, render_template, request, redirect, url_for, session
 from flask_restful import Resource, Api, reqparse
 from flask.views import MethodView
+from flask import Markup
 from werkzeug.datastructures import CallbackDict
 from flask.sessions import SessionInterface, SessionMixin
 from itsdangerous import URLSafeTimedSerializer, BadSignature
@@ -122,6 +123,7 @@ def uploaded():
         for f in request.files.getlist("file"):
             print f
             filename = f.filename
+            db.addCSVHistory(session["user"],filename)
             destination = "/".join([target, filename])
             print destination
             f.save(destination)
@@ -171,6 +173,8 @@ def saveCSV(data, name=None):
     # make sure name given has extinsion
     if not name.endswith(".csv"):
         name = name + ".csv"
+
+    db.addGridHistory(session["user"],name)
 
     # tack path on name to avoid changing paths
     fullname = "entered/" + name
@@ -350,6 +354,7 @@ def stats():
         count, med, std, minn, q1, q2, q3, maxx = sc.getDescription(avginp)
         if 'user' in session:
             status = messages.returnLoggedInMenuBar()
+            db.addBasicQueryHistory(session["user"],otherval)
         else:
             status = messages.returnLoggedOutMenuBar()
     return render_template('stats.html', menubar=status,
@@ -479,9 +484,9 @@ def login():
     return render_template('default.html', menubar=status, tag=mess)
     # return redirect('/')
 
-@app.route('/logout/', methods=["GET"])
+@app.route('/logout/', methods=["GET", "POST"])
 def logout():
-    """Login in page
+    """Logout page
     handle server side logic here
     """
     status = messages.returnLoggedOutMenuBar()
@@ -497,7 +502,7 @@ def logout():
 
     return None
 
-@app.route('/register/', methods=["GET", "POST", "PUT"])
+@app.route('/register', methods=["GET", "POST", "PUT"])
 def register():
     if request.method == "GET":
         # Render the registration page
@@ -521,6 +526,35 @@ def register():
         pass
     return None
 
+@app.route('/history', methods=["GET", "POST", "PUT"])
+def history():
+    if request.method == "GET":
+        # Render the history page
+        if 'user' in session:
+            status = messages.returnLoggedInMenuBar()
+            history = db.returnAllHistory(session["user"])
+            count = 0
+            table_html = ''
+            for item in history:
+                table_html = table_html + Markup('<tr><td style="width: 250px"><a href="/view_history?query=' + history[count][3] + '">' + history[count][0] + '</a></td><td style="width: 250px">' + history[count][1] + '</td></tr>')
+                count = count + 1
+            return render_template("history.html", menubar=status, tableList=table_html)
+    elif request.method == "POST":
+        return redirect('/')
+
+@app.route('/view_history', methods=["GET"])
+def view_history():
+    querydata = request.args.get('query')
+    if querydata[:1] == '1':
+        print querydata[3:-2:]
+    elif querydata[:1] == '2':
+        print querydata[3:-2:]
+    elif querydata[:1] == '3':
+        print querydata[3:-2:]
+    else:
+        print querydata[3:-2:]
+
+    return redirect('/history')
 
 @app.route('/plot_data/')
 def plot_data():
